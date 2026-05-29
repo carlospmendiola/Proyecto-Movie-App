@@ -1,0 +1,21 @@
+{
+  "name": "proyecto-movie-app",
+  "version": "1.0.0",
+  "description": "Creación de una base de datos de películas Nos centramos en el desarrollo de la lógica de servidor, la persistencia de datos, la gestión de ficheros y la seguridad. Construiremos una API REST robusta utilizando Node.js y Express.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carlospmendiola/Proyecto-Movie-App.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/carlospmendiola/Proyecto-Movie-App/issues"
+  },
+  "homepage": "https://github.com/carlospmendiola/Proyecto-Movie-App#readme"
+}
