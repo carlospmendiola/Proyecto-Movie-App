@@ -17,7 +17,7 @@ app.use(cors({
 }));
 app.use(express.json());
 
-process.env.MONGO_DB_URL = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/`;
+process.env.MONGO_DB_URL = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`;
 dbConnect().catch((error) => { console.log(error) });
 
 app.get('/', (req, res) => {
