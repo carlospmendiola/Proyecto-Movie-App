@@ -7,11 +7,11 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors({
   "origin": [
-    /^https?:\/\/(localhost|127\.0\.0\.1|\[::1\])(:\d+)?$/
+    /^https?:\/\/(localhost|127\.0\.0\.1|\[::1\])(:\d+)?$/  // Permitir desde origines locales (localhost, 127.0.0.1 y ::1)
   ],
-  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
-  "preflightContinue": false,
-  "optionsSuccessStatus": 200
+  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",              // Permitir el uso de los métodos HTTP especificados
+  "preflightContinue": false,                               // Cors es un middleware, cuando funciona por defecto da una respuesta y no pasa al siguiente middleware con next, es el comportamiento que de momento nos hace falta, nos aseguramos especificando el valor por defecto.
+  "optionsSuccessStatus": 200                               // Espcificamos que en caso de resultado positivo el código de respuesta sea siempre 200, es útil para ciertos dispositivos antiguos y embebidos que usan otros códigos distintos y pueden dar problemas
 }));
 app.use(express.json());
 
