@@ -56,5 +56,46 @@ userSchema.pre("save", async function (next) {
   }
 });
 
+// Mismo caso que el anterior pero para cuando se utilizan los métodos de findOneAndUpdate, updateOne y updateMany
+userSchema.pre(['findOneAndUpdate', 'updateOne', 'updateMany'], async function () {
+  const update = this.getUpdate();
+
+  // Para cuando se actualiza directamente la contraseña: { password: '...' }
+  if (update.password)
+    update.password = await hash(update.password, 10);
+  // Para cuando se actualiza através de $set: { $set: { password: '...' } }
+  else if (update.$set && update.$set.password)
+    update.$set.password = await hash(update.$set.password, 10);
+});
+
+// Se usa insertMany para insertar datos de prueba iniciales en la base de datos.
+userSchema.pre("insertMany", async function (docs) {
+  try {
+    // // Esta forma nofunciona porque forEach no esperar a que termine de generarse el hash
+    // // Iterar sobre todos los documentos para cifrar la contraseña
+    // docs.forEach(async doc => {
+    //   if (doc.password)
+    //     doc.password = await hash(doc.password, 10);
+    // });
+
+    // // Evito esta forma para no usar for ... of pero funciona
+    // // Iterar sobre todos los documentos para cifrar la contraseña
+    // for (let doc of docs)
+    //   if (doc.password)
+    //     doc.password = await hash(doc.password, 10);
+
+    // La única forma que se me ha ocurrido para que se espere a que el cifrado de la contraseña de cada documento termine
+    // Iterar sobre todos los documentos para cifrar la contraseña
+    return await Promise.all(
+      docs.map(async (doc) => {
+        if (doc.password)
+          doc.password = await hash(doc.password, 10);
+      })
+    );
+  } catch (error) {
+    throw error;
+  }
+});
+
 const User = model("User", userSchema, "users");
 module.exports = User;
