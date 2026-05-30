@@ -34,7 +34,11 @@ const userSchema = new Schema({
     trim: true,
     enum: ["admin", "user"],
     default: "user"
-  }
+  },
+  favorites: [{
+    type: Schema.Types.ObjectId,
+    ref: "Movie"
+  }]
 }, {
   timestamps: true
 });
@@ -52,5 +56,5 @@ userSchema.pre("save", async function (next) {
   }
 });
 
-const User = model("users", userSchema);
+const User = model("User", userSchema, "users");
 module.exports = User;
