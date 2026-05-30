@@ -1,11 +1,3 @@
-# Proyecto-Movie-App
-Creación de una base de datos de películas Nos centramos en el desarrollo de la lógica de servidor, la persistencia de datos, la gestión de ficheros y la seguridad. Construiremos una API REST robusta utilizando Node.js y Express.
-
-## Repositorio del proyecto
-https://github.com/carlospmendiola/Proyecto-Movie-App
-
-## Url despligue en Render
-
 ## Historias de invitado
   ### Como invitado puedo acceder al login
     - Recoger validar datos del login
@@ -72,14 +64,3 @@ En relación al uso de Multer proponemos que el tratamiento del nombre del archi
 ## Tareas según nivel urgencia
   - Crear funciones relacionadas en la verificación del Token
   - Crear funciones relacionadas en la verificación del rol de usuario
-
-
-
-## Elección BBDD 
-Se ha elegido MongoDB, por qué 
-
-## Creamos un primer Trello
-Un trello básico con las primeras Tareas a realizar
-
-## Meet primera reunión
-Realizamos un meet para la organización de tareas
