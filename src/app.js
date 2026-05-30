@@ -24,6 +24,8 @@ app.get('/', (req, res) => {
   res.json({ ok: true, msg: 'API Movie App funcionando' });
 });
 
+app.use('/populateDB', require("./rutas/populateDB.route"));
+
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en http://localhost:${PORT}`);
 });
