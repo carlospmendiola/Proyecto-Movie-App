@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
+const dbConnect = require('./utils/mongoConnect');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -14,6 +16,9 @@ app.use(cors({
   "optionsSuccessStatus": 200                               // Espcificamos que en caso de resultado positivo el código de respuesta sea siempre 200, es útil para ciertos dispositivos antiguos y embebidos que usan otros códigos distintos y pueden dar problemas
 }));
 app.use(express.json());
+
+process.env.MONGO_DB_URL = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/`;
+dbConnect().catch((error) => { console.log(error) });
 
 app.get('/', (req, res) => {
   res.json({ ok: true, msg: 'API Movie App funcionando' });
