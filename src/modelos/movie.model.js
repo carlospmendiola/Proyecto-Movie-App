@@ -26,10 +26,10 @@ const movieSchema = new Schema({
     type: String,
     trim: true,
     enum: [
-      'Acción', 'Aventura', 'Animación', 'Comedia', 'Crimen',
-      'Documental', 'Drama', 'Familiar', 'Fantasía', 'Historia',
-      'Terror', 'Música', 'Misterio', 'Romance', 'Ciencia ficción',
-      'Película de TV', 'Suspense', 'Guerra', 'Western'
+      "Acción", "Aventura", "Animación", "Comedia", "Crimen",
+      "Documental", "Drama", "Familiar", "Fantasía", "Historia",
+      "Terror", "Música", "Misterio", "Romance", "Ciencia ficción",
+      "Película de TV", "Suspense", "Guerra", "Western"
     ]
   }],
   duration: {
@@ -38,7 +38,7 @@ const movieSchema = new Schema({
     max: 1000,
     validate: {
       validator: Number.isInteger,
-      message: '{VALUE} debe ser en minutos'
+      message: "{VALUE} debe ser en minutos"
     }
   },
   externalId: {
