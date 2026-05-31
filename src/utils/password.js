@@ -1,4 +1,4 @@
-const { hash } = require("bcrypt");
+const { hash, compare } = require("bcrypt");
 
 const genHash = async password => {
   try {
@@ -8,4 +8,12 @@ const genHash = async password => {
   }
 };
 
-module.exports = { genHash };
+const compareHash = async (password, hash) => {
+  try {
+    return await compare(password, hash);
+  } catch (error) {
+    throw error;
+  }
+};
+
+module.exports = { genHash, compareHash };
