@@ -1,5 +1,5 @@
-const { Schema, model } = require("mongoose");
-const { hash } = require("bcrypt");
+import { Schema, model } from "mongoose";
+import { hash } from "bcrypt";
 
 const userSchema = new Schema({
   name: {
@@ -98,4 +98,4 @@ userSchema.pre("insertMany", async function (docs) {
 });
 
 const User = model("User", userSchema, "users");
-module.exports = User;
+export { User };
