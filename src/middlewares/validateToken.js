@@ -2,7 +2,7 @@ import { comprobarToken } from "../utils/gestionarTokens.js";
 
 export const validarToken = (req, res, next) => {
   try {
-    const token = req.header("Authorization").split(" ")[1] || "";
+    const token = req.header("Authorization")?.split(" ")[1] || "";
 
     //si no hay token => mensaje de error
     if (!token) {
