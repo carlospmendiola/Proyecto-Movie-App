@@ -70,6 +70,8 @@ En relación al uso de Multer proponemos que el tratamiento del nombre del archi
 ** Usar módulo de node para comprobar el hash del archivo
 
 ## Tareas según nivel urgencia
+- Crear conexión a la base de datos y modelos de los documentos
+- Generar datos de relleno inicial
 - Crear funciones relacionadas en la verificación del Token
 - Crear funciones relacionadas en la verificación del rol de usuario
 
