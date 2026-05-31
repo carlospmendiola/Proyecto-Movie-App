@@ -41,7 +41,8 @@ const movieSchema = new Schema({
     maxLength: 12
   }
 }, {
-  timestamps: true
+  timestamps: true,
+  versionKey: "version"
 });
 
 export const Movie = model("Movie", movieSchema, "movies");

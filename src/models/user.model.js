@@ -41,7 +41,8 @@ const userSchema = new Schema({
     ref: "Movie"
   }]
 }, {
-  timestamps: true
+  timestamps: true,
+  versionKey: "version"
 });
 
 // La siguiente función de callback no puede ser de flecha porque necesitamos poder acceder a la variable this y que esta no sea la propia función
