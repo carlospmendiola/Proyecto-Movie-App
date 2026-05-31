@@ -1,9 +1,9 @@
-const { Router } = require("express");
+import { Router } from "express";
 
-const { populateDB } = require("../controladores/populateDB.controller");
+import { populateDB } from "../controladores/populateDB.controller.js";
 
-const router = Router();
+const populateDBRoutes = Router();
 
-router.get("/", populateDB);
+populateDBRoutes.get("/", populateDB);
 
-module.exports = router;
+export { populateDBRoutes };

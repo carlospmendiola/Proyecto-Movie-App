@@ -1,7 +1,7 @@
-const { connection, Types } = require("mongoose");
+import mongoose from "mongoose";
 
-const User = require("../modelos/user.model");
-const Movie = require("../modelos/movie.model");
+import { User } from "../modelos/user.model.js";
+import { Movie } from "../modelos/movie.model.js";
 
 const populateDB = async (req, res) => {
   try {
@@ -212,4 +212,4 @@ const populateDB = async (req, res) => {
   }
 };
 
-module.exports = { populateDB };
+export { populateDB };
