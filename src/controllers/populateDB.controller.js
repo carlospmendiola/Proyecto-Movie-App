@@ -191,6 +191,6 @@ export const populateDB = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ ok: false, msg: "Error en la inserción masiva" });
+    res.status(500).json({ ok: false, msg: "Error en la inserción masiva", error });
   }
 };
