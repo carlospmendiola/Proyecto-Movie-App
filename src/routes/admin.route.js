@@ -7,7 +7,7 @@ import {
   insertarNuevaPelicula,
   editarPeliculaID,
   borrarPeliculasID
-} from "../controladores/admin.controller.js";
+} from "../controllers/admin.controller.js";
 
 export const adminRoutes = Router();
 

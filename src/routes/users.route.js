@@ -7,7 +7,7 @@ import {
   obtenerFavoritos,
   anadirFavorito,
   borrarFavorito
-} from "../controladores/user.controller.js";
+} from "../controllers/user.controller.js";
 
 export const usersRoutes = Router();
 

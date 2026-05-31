@@ -1,4 +1,4 @@
-import { Movie } from "../modelos/movie.model.js";
+import { Movie } from "../models/movie.model.js";
 
 export const obtenerTodasPeliculas = (req, res) => {
   return res.status(200).json({

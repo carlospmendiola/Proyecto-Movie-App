@@ -1,4 +1,4 @@
-import { User } from "../modelos/user.model.js";
+import { User } from "../models/user.model.js";
 
 export const loguear = (req, res) => {
   return res.status(200).json({

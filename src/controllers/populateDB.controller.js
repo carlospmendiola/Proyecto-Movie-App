@@ -1,7 +1,7 @@
 import mongoose, { Types } from "mongoose";
 
-import { User } from "../modelos/user.model.js";
-import { Movie } from "../modelos/movie.model.js";
+import { User } from "../models/user.model.js";
+import { Movie } from "../models/movie.model.js";
 
 const { connection } = mongoose;
 
