@@ -87,7 +87,7 @@ Entre PostgreSQL y MongoDB, se ha escogido este último como motor para la base 
 ### Modelos
 Se han definido dos modelos User y Movie para guardar respectivamente los usuarios y las películas.
 
-- Modelo **User**:
+- **User**:
 	- _\_id:_ ObjectId de MongoDB
 	- _name**\***:_ cadena de texto de hasta 30 caracteres
 	- _email**\***:_ cadena de texto de hasta 254 caracteres
@@ -100,7 +100,7 @@ Se han definido dos modelos User y Movie para guardar respectivamente los usuari
 
 		**\*** Campo requerido
 
-- Modelo **Movie**:
+- **Movie**:
 	- _\_id:_ ObjectId de MongoDB
 	- _title**\***:_ cadena de texto de hasta 255 caracteres
 	- _synopsis:_ cadena de texto de hasta 2000 caracteres
