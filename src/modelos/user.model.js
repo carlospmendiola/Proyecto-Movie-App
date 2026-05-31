@@ -97,5 +97,4 @@ userSchema.pre("insertMany", async function (docs) {
   }
 });
 
-const User = model("User", userSchema, "users");
-export { User };
+export const User = model("User", userSchema, "users");

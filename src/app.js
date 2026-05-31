@@ -1,9 +1,9 @@
 import express from 'express';
 import cors from 'cors';
-import { dbConnect } from './utils/mongoConnect.js';
 
 import 'dotenv/config';
 
+import { dbConnect } from './utils/mongoConnect.js';
 import { usersRoutes } from './rutas/users.route.js';
 import { adminRoutes } from './rutas/admin.route.js';
 import { publicRoutes } from './rutas/public.route.js';

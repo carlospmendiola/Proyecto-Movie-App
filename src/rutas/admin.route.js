@@ -1,7 +1,6 @@
-import pkg from 'express';
-const express = pkg;
-
+import { Router } from 'express';
 import { check } from 'express-validator'
+
 import {
     obtenerTodasPeliculas,
     obtenerPeliculasID,
@@ -10,7 +9,7 @@ import {
     borrarPeliculasID
 } from '../controladores/adminController.js'
 
-const adminRoutes = express.Router()
+export const adminRoutes = Router()
 
 //todas las pelis
 adminRoutes.get('/movies', obtenerTodasPeliculas)
@@ -26,6 +25,3 @@ adminRoutes.patch('/movies/edit', editarPeliculaID)
 
 //borrar peli
 adminRoutes.delete('/movies/:id', borrarPeliculasID)
-
-
-export { adminRoutes }

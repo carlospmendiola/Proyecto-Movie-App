@@ -1,6 +1,6 @@
 import { User } from '../modelos/user.model.js'
 
-const buscarPeliculasporID = (req, res) => {
+export const buscarPeliculasporID = (req, res) => {
     return res.status(200).json(
         {
             ok: true,
@@ -9,7 +9,7 @@ const buscarPeliculasporID = (req, res) => {
     )
 }
 
-const buscarPeliculasporTitulo = (req, res) => {
+export const buscarPeliculasporTitulo = (req, res) => {
     return res.status(200).json(
         {
             ok: true,
@@ -19,7 +19,7 @@ const buscarPeliculasporTitulo = (req, res) => {
 }
 
 
-const obtenerFavoritos = (req, res) => {
+export const obtenerFavoritos = (req, res) => {
     return res.status(200).json(
         {
             ok: true,
@@ -29,7 +29,7 @@ const obtenerFavoritos = (req, res) => {
 }
 
 
-const anadirFavorito = (req, res) => {
+export const anadirFavorito = (req, res) => {
     return res.status(200).json(
         {
             ok: true,
@@ -39,20 +39,11 @@ const anadirFavorito = (req, res) => {
 }
 
 
-const borrarFavorito = (req, res) => {
+export const borrarFavorito = (req, res) => {
     return res.status(200).json(
         {
             ok: true,
             msg: 'borrando pelicula de favoritos',
         }
     )
-}
-
-
-export {
-    buscarPeliculasporID,
-    buscarPeliculasporTitulo,
-    obtenerFavoritos,
-    anadirFavorito,
-    borrarFavorito
 }

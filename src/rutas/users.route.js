@@ -1,7 +1,6 @@
-import pkg from 'express';
-const express = pkg;
-
+import { Router } from 'express';
 import { check } from 'express-validator'
+
 import {
     buscarPeliculasporID,
     buscarPeliculasporTitulo,
@@ -10,7 +9,7 @@ import {
     borrarFavorito
 } from '../controladores/userController.js'
 
-const usersRoutes = express.Router()
+export const usersRoutes = Router()
 
 //pelis por ID
 usersRoutes.get('/movies/:id', buscarPeliculasporID)
@@ -27,6 +26,3 @@ usersRoutes.post('/favs/add/:id', anadirFavorito)
 
 //borrar peli
 usersRoutes.delete('/favs/del/:id', borrarFavorito)
-
-
-export { usersRoutes }

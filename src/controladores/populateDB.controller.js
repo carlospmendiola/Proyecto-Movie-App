@@ -1,9 +1,11 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 
 import { User } from "../modelos/user.model.js";
 import { Movie } from "../modelos/movie.model.js";
 
-const populateDB = async (req, res) => {
+const { connection } = mongoose;
+
+export const populateDB = async (req, res) => {
   try {
     // Si existe la colección users no poblamos la base de datos con los datos iniciales
     //if ((await connection.listCollections()).find(col => col.name === "users"))
@@ -211,5 +213,3 @@ const populateDB = async (req, res) => {
     res.status(500).json({ ok: false, msg: "Error en la inserción masiva" });
   }
 };
-
-export { populateDB };

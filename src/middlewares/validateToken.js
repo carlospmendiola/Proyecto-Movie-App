@@ -1,7 +1,7 @@
 import { comprobarToken } from "../utils/gestionarTokens.js"
 
 
-const validarToken = (req, res, next) => {
+export const validarToken = (req, res, next) => {
     try {
         const token = req.header("Authorization").split(" ")[1] || ""
 
@@ -26,5 +26,3 @@ const validarToken = (req, res, next) => {
     }
 
 }
-
-export { validarToken }

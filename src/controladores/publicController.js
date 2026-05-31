@@ -1,6 +1,6 @@
 import { User } from '../modelos/user.model.js'
 
-const loguear = (req, res) => {
+export const loguear = (req, res) => {
     return res.status(200).json(
         {
             ok: true,
@@ -10,7 +10,7 @@ const loguear = (req, res) => {
 }
 
 
-const registrar = (req, res) => {
+export const registrar = (req, res) => {
     return res.status(200).json(
         {
             ok: true,
@@ -18,6 +18,3 @@ const registrar = (req, res) => {
         }
     )
 }
-
-
-export { loguear, registrar };

@@ -1,6 +1,6 @@
-const { hash, compare } = require("bcrypt");
+import { hash, compare } from "bcrypt";
 
-const genHash = async password => {
+export const genHash = async password => {
   try {
     return await hash(password, 12);
   } catch (error) {
@@ -8,12 +8,10 @@ const genHash = async password => {
   }
 };
 
-const compareHash = async (password, hash) => {
+export const compareHash = async (password, hash) => {
   try {
     return await compare(password, hash);
   } catch (error) {
     throw error;
   }
 };
-
-module.exports = { genHash, compareHash };

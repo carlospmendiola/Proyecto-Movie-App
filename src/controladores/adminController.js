@@ -1,6 +1,6 @@
 import { Movie } from '../modelos/movie.model.js'
 
-const obtenerTodasPeliculas = (req, res) => {
+export const obtenerTodasPeliculas = (req, res) => {
     return res.status(200).json(
         {
             ok: true,
@@ -10,7 +10,7 @@ const obtenerTodasPeliculas = (req, res) => {
 }
 
 
-const obtenerPeliculasID = (req, res) => {
+export const obtenerPeliculasID = (req, res) => {
     return res.status(200).json(
         {
             ok: true,
@@ -20,7 +20,7 @@ const obtenerPeliculasID = (req, res) => {
 }
 
 
-const insertarNuevaPelicula = (req, res) => {
+export const insertarNuevaPelicula = (req, res) => {
     return res.status(200).json(
         {
             ok: true,
@@ -30,7 +30,7 @@ const insertarNuevaPelicula = (req, res) => {
 }
 
 
-const editarPeliculaID = (req, res) => {
+export const editarPeliculaID = (req, res) => {
     return res.status(200).json(
         {
             ok: true,
@@ -40,20 +40,11 @@ const editarPeliculaID = (req, res) => {
 }
 
 
-const borrarPeliculasID = (req, res) => {
+export const borrarPeliculasID = (req, res) => {
     return res.status(200).json(
         {
             ok: true,
             msg: 'borrando pelicula por id',
         }
     )
-}
-
-
-export {
-    obtenerPeliculasID,
-    obtenerTodasPeliculas,
-    insertarNuevaPelicula,
-    editarPeliculaID,
-    borrarPeliculasID
 }
