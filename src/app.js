@@ -11,7 +11,7 @@ import { populateDBRoutes } from "./routes/populateDB.route.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const URL_BASE = process.env.URL_BASE
+const URL_BASE = process.env.URL_BASE;
 
 app.use(cors({
   "origin": [
