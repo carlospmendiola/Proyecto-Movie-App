@@ -25,10 +25,9 @@ app.use(cors({
 app.use(express.json());
 
 process.env.MONGO_DB_URL = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`;
-//dbConnect().catch((error) => { console.log(error) });
+dbConnect().catch((error) => { console.log(error) });
 
-const url_base = '/proyecto_movie_app/v1'
-//const url_base = process.env.URL_BASE
+const url_base = process.env.URL_BASE
 
 app.use(`${url_base}/users`, usersRoutes);
 app.use(`${url_base}/admin`, adminRoutes);
