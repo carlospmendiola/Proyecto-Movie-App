@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
-import { hash } from "bcrypt";
+
+import { genHash } from "../utils/password.js";
 
 const userSchema = new Schema({
   name: {
