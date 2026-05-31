@@ -24,13 +24,7 @@ const movieSchema = new Schema({
   },
   genres: [{
     type: String,
-    trim: true,
-    enum: [
-      "Acción", "Aventura", "Animación", "Comedia", "Crimen",
-      "Documental", "Drama", "Familiar", "Fantasía", "Historia",
-      "Terror", "Música", "Misterio", "Romance", "Ciencia ficción",
-      "Película de TV", "Suspense", "Guerra", "Western"
-    ]
+    trim: true
   }],
   duration: {
     type: Number,
