@@ -191,6 +191,6 @@ export const populateDB = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ ok: false, msg: "Error en la inserción masiva", error });
+    res.status(500).json({ ok: false, msg: "Error en la inserción masiva", db_url: `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`, error });
   }
 };
