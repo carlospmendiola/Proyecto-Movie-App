@@ -50,7 +50,7 @@ userSchema.pre("save", async function (next) {
     return;
 
   try {
-    this.password = await hash(this.password, 10);
+    this.password = await genHash(this.password);
   } catch (error) {
     throw error; // Si hay error pasarlo al siguiente proceso de Mongoose para detener la inserción
   }
@@ -62,10 +62,10 @@ userSchema.pre(['findOneAndUpdate', 'updateOne', 'updateMany'], async function (
 
   // Para cuando se actualiza directamente la contraseña: { password: '...' }
   if (update.password)
-    update.password = await hash(update.password, 10);
+    update.password = await genHash(update.password);
   // Para cuando se actualiza através de $set: { $set: { password: '...' } }
   else if (update.$set && update.$set.password)
-    update.$set.password = await hash(update.$set.password, 10);
+    update.$set.password = await genHash(update.$set.password);
 });
 
 // Se usa insertMany para insertar datos de prueba iniciales en la base de datos.
@@ -75,21 +75,21 @@ userSchema.pre("insertMany", async function (docs) {
     // // Iterar sobre todos los documentos para cifrar la contraseña
     // docs.forEach(async doc => {
     //   if (doc.password)
-    //     doc.password = await hash(doc.password, 10);
+    //     doc.password = await genHash(doc.password);
     // });
 
     // // Evito esta forma para no usar for ... of pero funciona
     // // Iterar sobre todos los documentos para cifrar la contraseña
     // for (let doc of docs)
     //   if (doc.password)
-    //     doc.password = await hash(doc.password, 10);
+    //     doc.password = await genHash(doc.password);
 
     // La única forma que se me ha ocurrido para que se espere a que el cifrado de la contraseña de cada documento termine
     // Iterar sobre todos los documentos para cifrar la contraseña
     return await Promise.all(
       docs.map(async (doc) => {
         if (doc.password)
-          doc.password = await hash(doc.password, 10);
+          doc.password = await genHash(doc.password);
       })
     );
   } catch (error) {

@@ -5,9 +5,10 @@ import { Movie } from "../modelos/movie.model.js";
 
 const populateDB = async (req, res) => {
   try {
-    console.log(await connection.listDatabases());
     // Si existe la colección users no poblamos la base de datos con los datos iniciales
-    if ((await connection.listCollections()).find(col => col.name === "users"))
+    //if ((await connection.listCollections()).find(col => col.name === "users"))
+    // Si no hay algún documento en la colección users no poblamos la base de datos con los datos iniciales
+    if (await User.countDocuments() || await Movie.countDocuments())
       res.status(200).json({ ok: true, msg: "No hay necesidad de poblar la base de datos, ya existe" });
     else {
       const movie1Id = new Types.ObjectId();
