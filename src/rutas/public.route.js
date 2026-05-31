@@ -1,13 +1,11 @@
-import { Router } from 'express';
-import { check } from 'express-validator'
+import { Router } from "express";
+import { check } from "express-validator";
 
-import { loguear, registrar } from '../controladores/publicController.js'
-import { validateInputs } from '../middlewares/validateInputs.js'
+import { loguear, registrar } from "../controladores/public.controller.js";
+import { validateInputs } from "../middlewares/validateInputs.js";
 
-export const publicRoutes = Router()
+export const publicRoutes = Router();
 
+publicRoutes.post("/login", loguear);
 
-
-publicRoutes.post('/login', loguear)
-
-publicRoutes.post('/new', registrar)
+publicRoutes.post("/new", registrar);

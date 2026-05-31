@@ -1,17 +1,17 @@
-import express from 'express';
-import cors from 'cors';
+import express from "express";
+import cors from "cors";
 
-import 'dotenv/config';
+import "dotenv/config";
 
-import { dbConnect } from './utils/mongoConnect.js';
-import { usersRoutes } from './rutas/users.route.js';
-import { adminRoutes } from './rutas/admin.route.js';
-import { publicRoutes } from './rutas/public.route.js';
-import { populateDBRoutes } from './rutas/populateDB.route.js';
-
+import { dbConnect } from "./utils/mongoConnect.js";
+import { usersRoutes } from "./rutas/users.route.js";
+import { adminRoutes } from "./rutas/admin.route.js";
+import { publicRoutes } from "./rutas/public.route.js";
+import { populateDBRoutes } from "./rutas/populateDB.route.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const URL_BASE = process.env.URL_BASE
 
 app.use(cors({
   "origin": [
@@ -27,14 +27,11 @@ app.use(express.json());
 process.env.MONGO_DB_URL = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`;
 dbConnect().catch((error) => { console.log(error) });
 
-const url_base = process.env.URL_BASE
-
-app.use(`${url_base}/users`, usersRoutes);
-app.use(`${url_base}/admin`, adminRoutes);
-app.use(`${url_base}/public`, publicRoutes);
-app.use('/populateDB', populateDBRoutes);
-
+app.use(`${URL_BASE}/users`, usersRoutes);
+app.use(`${URL_BASE}/admin`, adminRoutes);
+app.use(`${URL_BASE}/public`, publicRoutes);
+app.use("/populateDB", populateDBRoutes);
 
 app.listen(PORT, () => {
-  console.log(`Servidor escuchando en http://localhost:${PORT}`);
+  console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
