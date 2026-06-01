@@ -74,11 +74,35 @@ export const editarPeliculaID = (req, res) => {
   });
 };
 
-export const borrarPeliculasID = (req, res) => {
-  console.log("nuevo token: ", req.token)
-  return res.status(200).json({
-    ok: true,
-    msg: "borrando pelicula por id",
-    token: req.token
-  });
+export const borrarPeliculasID = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const pelicula = await Movie.findByIdAndDelete(id);
+
+    console.log("PELÍCULA ENCONTRADA:", pelicula);
+
+    if (!pelicula) {
+      return res.status(404).json({
+        ok: false,
+        msg: "Película no encontrada",
+        token: req.Token
+      });
+    }
+
+    return res.status(200).json({
+      ok: true,
+      msg: "Película encontrada",
+      pelicula,
+      token: req.Token
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      ok: false,
+      msg: "Error interno del servidor",
+      token: req.Token,
+      error: error.message
+    });
+  }
 };
