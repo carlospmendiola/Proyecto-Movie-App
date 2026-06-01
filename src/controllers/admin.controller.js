@@ -1,6 +1,5 @@
 import { Movie } from "../models/movie.model.js";
 
-
 export const obtenerTodasPeliculas = (req, res) => {
   console.log("nuevo token: ", req.Token)
   return res.status(200).json({
@@ -32,12 +31,12 @@ export const insertarNuevaPelicula = async (req, res) => {
       duration,
       externalId,
       image: imagePath
-    }) 
+    })
     await newMovie.save()
     return res.status(201).json({
       ok: true,
       msg: "Recurso creado"
-    }); 
+    });
   } catch (error) {
     console.log(error)
     return res.status(500).json({
@@ -46,7 +45,6 @@ export const insertarNuevaPelicula = async (req, res) => {
     })
   }
 }
-
 
 export const editarPeliculaID = (req, res) => {
   console.log("nuevo token: ", req.Token)
