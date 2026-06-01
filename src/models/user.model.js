@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-import { genHash } from "../utils/password.js";
+import { genHash, compareHash } from "../utils/password.js";
 
 const userSchema = new Schema({
   name: {
@@ -98,20 +98,9 @@ userSchema.pre("insertMany", async function (docs) {
     throw error;
   }
 });
-// For the favourites
-const mongoose = require('mongoose');
 
-const UserSchema = new mongoose.Schema({
-    nombre: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    rol: { type: String, enum: ['user', 'admin'], default: 'user' },
-    // This connects the user to their favorite movies!
-    peliculasFavoritas: [{ 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'Movie' 
-    }]
-});
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  return await compareHash(candidatePassword, this.password);
+};
 
-module.exports = mongoose.model('User', UserSchema);
 export const User = model("User", userSchema, "users");

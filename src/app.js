@@ -24,6 +24,10 @@ app.use(cors({
 
 app.use(express.json());
 
+// Usamos la carpeta public como archivos estáticos
+// Las imágenes serán accesibles desde http://localhost:3000/uploads/nombre-imagen.jpg
+app.use('/uploads', express.static('src/public/uploads'))
+
 dbConnect().catch((error) => { console.log(error) });
 
 app.use(`${URL_BASE}/users`, usersRoutes);
