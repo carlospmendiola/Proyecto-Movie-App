@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { check } from "express-validator"
+import { validarRolUser } from "../middlewares/validarRol.js";
+import { validarToken } from "../middlewares/validateToken.js";
 
 import {
   buscarPeliculasporID,
@@ -11,17 +13,14 @@ import {
 
 export const usersRoutes = Router();
 
-//pelis por ID
-usersRoutes.get("/movies/:id", buscarPeliculasporID);
-
 //pelis por titulo
-usersRoutes.get("/movies/:titulo", buscarPeliculasporTitulo);
+usersRoutes.get("/movies/:titulo", [validarToken, validarRolUser], buscarPeliculasporTitulo);
 
 //todos los favoritos
-usersRoutes.get("/favs", obtenerFavoritos);
+usersRoutes.get("/favs", [validarToken, validarRolUser], obtenerFavoritos);
 
 //nueva peli
-usersRoutes.post("/favs/add/:id", anadirFavorito);
+usersRoutes.post("/favs/add/:id", [validarToken, validarRolUser], anadirFavorito);
 
 //borrar peli
-usersRoutes.delete("/favs/del/:id", borrarFavorito);
+usersRoutes.delete("/favs/del/:id", [validarToken, validarRolUser], borrarFavorito);
