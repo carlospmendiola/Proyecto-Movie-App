@@ -6,7 +6,6 @@ const ADMIN = 'admin';
 export const validarRolUser = (req, res, next) => {
     try {
         const rol = req.rol;
-        console.log({ rol })
 
         //si no hay rol => mensaje de error
         if (!rol) {
