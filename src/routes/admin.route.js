@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { check } from "express-validator";
+import  upload from "../middlewares/uploads.js";
 
 import {
   obtenerTodasPeliculas,
@@ -17,11 +18,12 @@ adminRoutes.get("/movies", obtenerTodasPeliculas);
 //pelis por ID
 adminRoutes.get("/movies/:id", obtenerPeliculasID);
 
-//nueva peli
-adminRoutes.post("/movies/new", insertarNuevaPelicula);
+//nueva peli e imagen
+adminRoutes.post("/movies/new", upload.single('image'), insertarNuevaPelicula);
 
 //editar peli
 adminRoutes.patch("/movies/edit", editarPeliculaID);
 
 //borrar peli
 adminRoutes.delete("/movies/:id", borrarPeliculasID);
+

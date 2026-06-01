@@ -7,6 +7,11 @@ const movieSchema = new Schema({
     required: true,
     maxLength: 255
   },
+  image: {
+    type: String,
+    trim: true,
+    required: true
+  },
   synopsis: {
     type: String,
     trim: true,

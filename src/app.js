@@ -3,7 +3,9 @@ import cors from "cors";
 
 import "dotenv/config";
 
+
 import { dbConnect } from "./utils/mongoConnect.js";
+
 import { usersRoutes } from "./routes/users.route.js";
 import { adminRoutes } from "./routes/admin.route.js";
 import { authRoutes } from "./routes/auth.route.js";
@@ -24,12 +26,19 @@ app.use(cors({
 
 app.use(express.json());
 
+// Usamos la carpeta public como archivos estáticos
+// Las imágenes serán accesibles desde http://localhost:3000/uploads/nombre-imagen.jpg
+app.use('/uploads', express.static('src/public/uploads'))
+
 dbConnect().catch((error) => { console.log(error) });
 
 app.use(`${URL_BASE}/users`, usersRoutes);
-app.use(`${URL_BASE}/admin`, adminRoutes);
+// app.use(`${URL_BASE}/admin`, adminRoutes);
+app.use('/api/admin', adminRoutes);
 app.use(`${URL_BASE}/auth`, authRoutes);
 app.use("/populateDB", populateDBRoutes);
+
+console.log('URL_BASE:', URL_BASE)
 
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en el puerto ${PORT}`);
