@@ -1,20 +1,20 @@
 import { Movie } from "../models/movie.model.js";
 
 export const obtenerTodasPeliculas = (req, res) => {
-  console.log("nuevo token: ", req.Token)
+  console.log("nuevo token: ", req.token)
   return res.status(200).json({
     ok: true,
     msg: "obteniendo una peliculas",
-    token: req.Token
+    token: req.token
   });
 };
 
 export const obtenerPeliculasID = (req, res) => {
-  console.log("nuevo token: ", req.Token)
+  console.log("nuevo token: ", req.token)
   return res.status(200).json({
     ok: true,
     msg: "obteniendo una peliculas por id",
-    token: req.Token
+    token: req.token
   });
 };
 
@@ -47,19 +47,19 @@ export const insertarNuevaPelicula = async (req, res) => {
 }
 
 export const editarPeliculaID = (req, res) => {
-  console.log("nuevo token: ", req.Token)
+  console.log("nuevo token: ", req.token)
   return res.status(200).json({
     ok: true,
     msg: "pelicula editada",
-    token: req.Token
+    token: req.token
   });
 };
 
 export const borrarPeliculasID = (req, res) => {
-  console.log("nuevo token: ", req.Token)
+  console.log("nuevo token: ", req.token)
   return res.status(200).json({
     ok: true,
     msg: "borrando pelicula por id",
-    token: req.Token
+    token: req.token
   });
 };
