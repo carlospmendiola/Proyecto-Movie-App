@@ -4,6 +4,13 @@ export const obtenerTodasPeliculas = async (req, res) => {
   try {
     const movies = await Movie.find();
 
+    if (!movies?.length)
+      return res.status(404).json({
+        ok: false,
+        msg: "No se encontraron películas",
+        token: req.token
+      });
+
     return res.status(200).json({
       ok: true,
       msg: movies,
@@ -21,11 +28,18 @@ export const obtenerTodasPeliculas = async (req, res) => {
 export const obtenerPeliculasID = async (req, res) => {
   try {
     const { id } = req.params;
-    const movies = await Movie.findById(id);
+    const movie = await Movie.findById(id);
+
+    if (!movie)
+      return res.status(404).json({
+        ok: false,
+        msg: "No se encontraró la película",
+        token: req.token
+      });
 
     return res.status(200).json({
       ok: true,
-      msg: movies,
+      msg: movie,
       token: req.token
     });
   } catch (error) {
