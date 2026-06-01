@@ -6,7 +6,7 @@ import "dotenv/config";
 import { dbConnect } from "./utils/mongoConnect.js";
 import { usersRoutes } from "./routes/users.route.js";
 import { adminRoutes } from "./routes/admin.route.js";
-import { publicRoutes } from "./routes/public.route.js";
+import { authRoutes } from "./routes/auth.route.js";
 import { populateDBRoutes } from "./routes/populateDB.route.js";
 
 const app = express();
@@ -28,7 +28,7 @@ dbConnect().catch((error) => { console.log(error) });
 
 app.use(`${URL_BASE}/users`, usersRoutes);
 app.use(`${URL_BASE}/admin`, adminRoutes);
-app.use(`${URL_BASE}/public`, publicRoutes);
+app.use(`${URL_BASE}/auth`, authRoutes);
 app.use("/populateDB", populateDBRoutes);
 
 app.listen(PORT, () => {
