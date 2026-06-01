@@ -33,9 +33,29 @@ export const login = async (req, res) => {
   }
 };
 
-export const signup = (req, res) => {
-  return res.status(200).json({
-    ok: true,
-    msg: "nuevo usuario creado con exito"
-  });
+export const signup = async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+
+    if (await User.exists({ email }))
+      return res.status(409).json({
+        ok: false,
+        msg: "Email ya registrado. Utiliza recordar contraseña si la has olvidado."
+      });
+
+    const { _id: id, rol } = await new User({ name, email, password }).save();
+
+    const token = await generarToken({ id, rol });
+
+    res.status(201).json({
+      ok: true,
+      token
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Error interno del servidor"
+    });
+  }
 };
