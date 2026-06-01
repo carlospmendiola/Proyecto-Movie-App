@@ -24,7 +24,7 @@ app.use(cors({
 
 app.use(express.json());
 
-//dbConnect().catch((error) => { console.log(error) });
+dbConnect().catch((error) => { console.log(error) });
 
 app.use(`${URL_BASE}/users`, usersRoutes);
 app.use(`${URL_BASE}/admin`, adminRoutes);
