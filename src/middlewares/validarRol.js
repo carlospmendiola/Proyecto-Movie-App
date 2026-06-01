@@ -6,7 +6,6 @@ const ADMIN = 'admin';
 export const validarRolUser = (req, res, next) => {
     try {
         const rol = req.rol;
-        console.log({ rol })
 
         //si no hay rol => mensaje de error
         if (!rol) {
@@ -17,8 +16,13 @@ export const validarRolUser = (req, res, next) => {
         }
 
         //existe token
-        if (USER === rol)
-            next();
+        if (USER !== rol)
+            return res.status(403).json({
+                ok: true,
+                msg: "Acceso prohibido"
+            });
+
+        next();
     } catch (error) {
         res.status(400).json({
             ok: true,
@@ -40,8 +44,13 @@ export const validarRolAdmin = (req, res, next) => {
         }
 
         //existe token
-        if (ADMIN === rol)
-            next();
+        if (ADMIN !== rol)
+            return res.status(403).json({
+                ok: true,
+                msg: "Acceso prohibido"
+            });
+
+        next();
     } catch (error) {
         res.status(400).json({
             ok: true,
