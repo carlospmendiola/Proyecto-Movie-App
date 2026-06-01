@@ -1,24 +1,20 @@
-import { sign, verify } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
+const { sign, verify } = jwt;
+import { promisify } from "node:util";
 
-const SECRET_KEY = process.env.SECRET_KEY;
+const signAsync = promisify(sign);
+
+const SECRET_KEY = process.env.TOKEN_SECRET_KEY;
 
 //Generar token
-export const generarToken = (payload) => {
-  return new Promise((resolve, reject) => {
-    sign(payload, SECRET_KEY, { expiresIn: "1h" }, (error, token) => {
-      if (error) {
-        console.log(error);
-        return reject(`Error al generar el token:\n${error}`);
-      }
-      resolve(token);
-    });
-  });
+export const generarToken = async (payload) => {
+  return signAsync(payload, SECRET_KEY, { expiresIn: "1h", "algorithm": "HS512" });
 };
 
 //Comprobar token
-export const comprobarToken = (token) => {
+export const comprobarToken = async (token) => {
   try {
-    return verify(token, SECRET_KEY);
+    return await verify(token, SECRET_KEY)
   } catch (error) {
     throw error;
   }

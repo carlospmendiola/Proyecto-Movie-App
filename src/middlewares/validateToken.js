@@ -1,25 +1,32 @@
-import { comprobarToken } from "../utils/gestionarTokens.js";
+import { comprobarToken, generarToken } from "../utils/gestionarToken.js";
 
-export const validarToken = (req, res, next) => {
+export const validarToken = async (req, res, next) => {
   try {
-    const token = req.header("Authorization")?.split(" ")[1] || "";
+    const token = req.header("Authorization")?.split(" ")[1];
 
-    //si no hay token => mensaje de error
     if (!token) {
-      return res.status(400).json({
+      return res.status(401).json({
         ok: false,
         msg: "Token no enviado"
       });
     }
 
-    //existe token
-    const resultado = comprobarToken(token);
+    const resultado = await comprobarToken(token);
+
     req.id = resultado.id;
+    req.rol = resultado.rol;
+
+    const nuevoToken = await generarToken(resultado);
+
+    req.Token = nuevoToken
+    console.log({ nuevoToken })
+
     next();
+
   } catch (error) {
-    res.status(400).json({
-      ok: true,
-      msg: "Error en el token"
+    return res.status(401).json({
+      ok: false,
+      msg: error.message || "Error en el token"
     });
   }
 };
