@@ -66,11 +66,11 @@ export const insertarNuevaPelicula = async (req, res) => {
 }
 
 export const editarPeliculaID = (req, res) => {
-  console.log("nuevo token: ", req.Token)
+  console.log("nuevo token: ", req.token)
   return res.status(200).json({
     ok: true,
     msg: "pelicula editada",
-    token: req.Token
+    token: req.token
   });
 };
 
@@ -86,7 +86,7 @@ export const borrarPeliculasID = async (req, res) => {
       return res.status(404).json({
         ok: false,
         msg: "Película no encontrada",
-        token: req.Token
+        token: req.token
       });
     }
 
@@ -94,14 +94,14 @@ export const borrarPeliculasID = async (req, res) => {
       ok: true,
       msg: "Película borrada",
       pelicula,
-      token: req.Token
+      token: req.token
     });
 
   } catch (error) {
     return res.status(500).json({
       ok: false,
       msg: "Error interno del servidor",
-      token: req.Token,
+      token: req.token,
       error: error.message
     });
   }
