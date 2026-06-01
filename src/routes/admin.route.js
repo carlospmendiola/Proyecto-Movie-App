@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { check } from "express-validator";
+import upload from "../middlewares/uploads.js";
 import { validarRolAdmin } from "../middlewares/validarRol.js";
 import { validarToken } from "../middlewares/validateToken.js";
 import { validateInputs } from "../middlewares/validateInputs.js";
@@ -34,7 +35,8 @@ adminRoutes.post("/movies/new", [
   check('externalId', '').optional().not().isEmpty(),
   validateInputs,
   validarToken,
-  validarRolAdmin],
+  validarRolAdmin,
+  upload.single('image')],
   insertarNuevaPelicula);
 
 //editar peli

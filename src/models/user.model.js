@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-import { genHash } from "../utils/password.js";
+import { genHash, compareHash } from "../utils/password.js";
 
 const userSchema = new Schema({
   name: {
@@ -98,5 +98,9 @@ userSchema.pre("insertMany", async function (docs) {
     throw error;
   }
 });
+
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  return await compareHash(candidatePassword, this.password);
+};
 
 export const User = model("User", userSchema, "users");
