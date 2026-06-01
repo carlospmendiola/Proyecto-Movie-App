@@ -39,9 +39,15 @@ adminRoutes.post("/movies", [
   upload.single('image')],
   insertarNuevaPelicula);
 
-//editar peli
+// Editar una película existente por su ID
+// Requiere: token JWT válido, rol de administrador y opcionalmente una nueva imagen
 adminRoutes.patch("/movies/:id",
   [
+    // Multer procesa la imagen si se envía una nueva carátula
+    // El archivo viene en el campo 'image' del form-data
+    upload.single('image'),
+    // Validaciones de los campos del formulario con express-validator
+    // title es obligatorio, el resto son opcionales
     check('title', 'El titulo es obligatorio').not().isEmpty(),
     check('synopsis', '').optional().not().isEmpty(),
     check('year', '').optional().not().isEmpty(),
@@ -51,7 +57,8 @@ adminRoutes.patch("/movies/:id",
     check('externalId', '').optional().not().isEmpty(),
     validateInputs,
     validarToken,
-    validarRolAdmin
+    validarRolAdmin,
+    
   ],
   editarPeliculaID);
 

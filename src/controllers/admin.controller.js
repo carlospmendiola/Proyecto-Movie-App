@@ -38,7 +38,6 @@ export const insertarNuevaPelicula = async (req, res) => {
       msg: "Recurso creado"
     });
   } catch (error) {
-    console.log(error)
     return res.status(500).json({
       ok: false,
       msg: error.message
@@ -46,13 +45,26 @@ export const insertarNuevaPelicula = async (req, res) => {
   }
 }
 
-export const editarPeliculaID = (req, res) => {
-  console.log("nuevo token: ", req.Token)
-  return res.status(200).json({
+export const editarPeliculaID = async (req, res) => {
+  try {
+    const { title, synopsis, year, director, genres, duration, externalId } = req.body
+    const imagePath = req.file ? req.file.path : null
+    const movieId = req.params.id;
+    const movieActualizada = await Movie.findByIdAndUpdate( movieId, 
+    { title, synopsis, year, director, genres, duration, externalId, image: imagePath },
+    { new: true }  // devuelve el documento ya actualizado
+    )
+    return res.status(200).json({
     ok: true,
     msg: "pelicula editada",
-    token: req.Token
+    movie: movieActualizada
   });
+  } catch (error) {
+    return res.status(500).json({
+      ok: false,
+      msg: error.message
+    })
+  }
 };
 
 export const borrarPeliculasID = (req, res) => {
