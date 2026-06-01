@@ -4,7 +4,7 @@ import cors from "cors";
 import "dotenv/config";
 
 import { dbConnect } from "./utils/mongoConnect.js";
-import { usersRoutes } from "./routes/users.route.js";
+import { moviesRoutes } from "./routes/movies.route.js";
 import { adminRoutes } from "./routes/admin.route.js";
 import { authRoutes } from "./routes/auth.route.js";
 import { populateDBRoutes } from "./routes/populateDB.route.js";
@@ -30,7 +30,7 @@ app.use('/uploads', express.static('src/public/uploads'))
 
 dbConnect().catch((error) => { console.log(error) });
 
-app.use(`${URL_BASE}/users`, usersRoutes);
+app.use(`${URL_BASE}/movies`, moviesRoutes);
 app.use(`${URL_BASE}/admin`, adminRoutes);
 app.use(`${URL_BASE}/auth`, authRoutes);
 app.use("/populateDB", populateDBRoutes);
