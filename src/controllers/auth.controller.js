@@ -1,5 +1,5 @@
 import { User } from "../models/user.model.js";
-//import { generarToken } from "../utils/gestionarToken.js";
+import { generarToken } from "../utils/gestionarToken.js";
 
 export const login = async (req, res) => {
   try {
@@ -18,11 +18,11 @@ export const login = async (req, res) => {
         msg: "Contraseña incorrecta"
       });
 
-    //const token = generarToken({ id: usuario._id, rol: usuario.rol });
+    const token = await generarToken({ id: usuario._id, rol: usuario.rol });
 
     res.status(200).json({
       ok: true,
-      //token
+      token
     });
   } catch (error) {
     console.log(error);
