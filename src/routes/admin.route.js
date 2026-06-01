@@ -25,7 +25,7 @@ adminRoutes.get("/movies", [
 adminRoutes.get("/movies/:id", [validarToken, validarRolAdmin], obtenerPeliculasID);
 
 //nueva peli
-adminRoutes.post("/movies/new", [
+adminRoutes.post("/movies", [
   check('title', 'El titulo es obligatorio').not().isEmpty(),
   check('synopsis', '').optional().not().isEmpty(),
   check('year', '').optional().not().isEmpty(),
@@ -40,7 +40,7 @@ adminRoutes.post("/movies/new", [
   insertarNuevaPelicula);
 
 //editar peli
-adminRoutes.patch("/movies/edit/:id",
+adminRoutes.patch("/movies/:id",
   [
     check('title', 'El titulo es obligatorio').not().isEmpty(),
     check('synopsis', '').optional().not().isEmpty(),

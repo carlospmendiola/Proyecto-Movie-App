@@ -27,6 +27,15 @@ export const obtenerFavoritos = (req, res) => {
   });
 };
 
+export const obtenerPelicula = (req, res) => {
+  console.log("nuevo token: ", req.Token)
+  return res.status(200).json({
+    ok: true,
+    msg: "obteniendo listado de favoritos",
+    token: req.Token
+  });
+};
+
 export const anadirFavorito = (req, res) => {
   console.log("nuevo token: ", req.Token)
   return res.status(200).json({
