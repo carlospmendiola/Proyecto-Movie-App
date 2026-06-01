@@ -16,7 +16,7 @@ export const validarToken = async (req, res, next) => {
     req.id = resultado.id;
     req.rol = resultado.rol;
 
-    const nuevoToken = await generarToken(resultado);
+    const nuevoToken = await generarToken({ id: resultado.id, rol: resultado.rol });
 
     req.Token = nuevoToken
     console.log({ nuevoToken })
@@ -24,6 +24,7 @@ export const validarToken = async (req, res, next) => {
     next();
 
   } catch (error) {
+    console.log(error);
     return res.status(401).json({
       ok: false,
       msg: error.message || "Error en el token"
