@@ -66,11 +66,11 @@ export const insertarNuevaPelicula = async (req, res) => {
 }
 
 export const editarPeliculaID = (req, res) => {
-  console.log("nuevo token: ", req.token)
+  console.log("nuevo token: ", req.Token)
   return res.status(200).json({
     ok: true,
     msg: "pelicula editada",
-    token: req.token
+    token: req.Token
   });
 };
 
@@ -80,7 +80,7 @@ export const borrarPeliculasID = async (req, res) => {
 
     const pelicula = await Movie.findByIdAndDelete(id);
 
-    console.log("PELÍCULA ENCONTRADA:", pelicula);
+    console.log("PELÍCULA BORRADA:", pelicula);
 
     if (!pelicula) {
       return res.status(404).json({
@@ -92,7 +92,7 @@ export const borrarPeliculasID = async (req, res) => {
 
     return res.status(200).json({
       ok: true,
-      msg: "Película encontrada",
+      msg: "Película borrada",
       pelicula,
       token: req.Token
     });
