@@ -17,8 +17,13 @@ export const validarRolUser = (req, res, next) => {
         }
 
         //existe token
-        if (USER === rol)
-            next();
+        if (USER !== rol)
+            res.status(403).json({
+                ok: true,
+                msg: "Acceso prohibido"
+            });
+
+        next();
     } catch (error) {
         res.status(400).json({
             ok: true,
@@ -40,8 +45,13 @@ export const validarRolAdmin = (req, res, next) => {
         }
 
         //existe token
-        if (ADMIN === rol)
-            next();
+        if (ADMIN !== rol)
+            res.status(403).json({
+                ok: true,
+                msg: "Acceso prohibido"
+            });
+
+        next();
     } catch (error) {
         res.status(400).json({
             ok: true,
