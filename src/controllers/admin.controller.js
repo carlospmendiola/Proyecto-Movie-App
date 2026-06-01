@@ -1,12 +1,21 @@
 import { Movie } from "../models/movie.model.js";
 
-export const obtenerTodasPeliculas = (req, res) => {
-  console.log("nuevo token: ", req.token)
-  return res.status(200).json({
-    ok: true,
-    msg: "obteniendo una peliculas",
-    token: req.token
-  });
+export const obtenerTodasPeliculas = async (req, res) => {
+  try {
+    const movies = await Movie.find();
+
+    return res.status(200).json({
+      ok: true,
+      msg: movies,
+      token: req.token
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Error interno del servidor"
+    });
+  }
 };
 
 export const obtenerPeliculasID = (req, res) => {
