@@ -25,7 +25,7 @@ adminRoutes.get("/movies",
   , obtenerTodasPeliculas);
 
 //pelis por ID
-adminRoutes.get("/movies/:id", [validarToken, validarRol(["admin", "user"])], obtenerPeliculasID);
+adminRoutes.get("/movies/:id", [validarToken, validarRol(["admin"])], obtenerPeliculasID);
 
 //nueva peli
 adminRoutes.post("/movies", (req, res, next) => {
