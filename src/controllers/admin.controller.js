@@ -1,4 +1,5 @@
 import { Movie } from "../models/movie.model.js";
+import { findMoviebyIdController } from "../utils/findMovieByIdController.js";
 
 export const obtenerTodasPeliculas = async (req, res) => {
   try {
@@ -26,29 +27,7 @@ export const obtenerTodasPeliculas = async (req, res) => {
 };
 
 export const obtenerPeliculasID = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const movie = await Movie.findById(id);
-
-    if (!movie)
-      return res.status(404).json({
-        ok: false,
-        msg: "No se encontraró la película",
-        token: req.token
-      });
-
-    return res.status(200).json({
-      ok: true,
-      msg: movie,
-      token: req.token
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      ok: false,
-      msg: "Error interno del servidor"
-    });
-  }
+  findMoviebyIdController(req, res);
 };
 
 export const insertarNuevaPelicula = async (req, res) => {
