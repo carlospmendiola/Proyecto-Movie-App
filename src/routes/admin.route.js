@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { check } from "express-validator";
 import upload from "../middlewares/uploads.js";
-import { validarRolAdmin } from "../middlewares/validarRol.js";
+import { validarRol } from "../middlewares/validarRol.js";
 import { validarToken } from "../middlewares/validateToken.js";
 import { validateInputs } from "../middlewares/validateInputs.js";
 
@@ -16,13 +16,15 @@ import {
 export const adminRoutes = Router();
 
 //todas las pelis
-adminRoutes.get("/movies", [
-  validarToken,
-  validarRolAdmin
-], obtenerTodasPeliculas);
+adminRoutes.get("/movies",
+  [
+    validarToken,
+    validarRol(["admin"])
+  ]
+  , obtenerTodasPeliculas);
 
 //pelis por ID
-adminRoutes.get("/movies/:id", [validarToken, validarRolAdmin], obtenerPeliculasID);
+adminRoutes.get("/movies/:id", [validarToken, validarRol(["admin", "user"])], obtenerPeliculasID);
 
 //nueva peli
 adminRoutes.post("/movies", (req, res, next) => {
@@ -37,8 +39,9 @@ adminRoutes.post("/movies", (req, res, next) => {
   check('title', 'El titulo es obligatorio').not().isEmpty(),
   validateInputs,
   validarToken,
-  validarRolAdmin
-], insertarNuevaPelicula);
+  validarRol(["admin"]),
+  upload.single('image')],
+  insertarNuevaPelicula);
 
 // Editar una película existente por su ID
 // Requiere: token JWT válido, rol de administrador y opcionalmente una nueva imagen
@@ -58,10 +61,8 @@ adminRoutes.patch("/movies/:id",
     check('externalId', '').optional().not().isEmpty(),
     validateInputs,
     validarToken,
-    validarRolAdmin,
-    
-  ],
+    validarRol(["admin"])],
   editarPeliculaID);
 
 //borrar peli
-adminRoutes.delete("/movies/:id", [validarToken, validarRolAdmin], borrarPeliculasID);
+adminRoutes.delete("/movies/:id", [validarToken, validarRol(["admin"])], borrarPeliculasID);
