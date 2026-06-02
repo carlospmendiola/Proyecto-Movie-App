@@ -61,6 +61,13 @@ Directores _director_ en cambio, en caso de existir más de uno por película se
 
 Los géneros _genres_ consiste en un array de cadenas de texto de forma que se pueda implementar de forma sencilla una búsqueda por categoría pudiendo tener una misma película varias a la vez.
 
+### JSON Web Token
+La autenticación ha sido implementada mediante JWT de forma que se genera un token a la ahora de registrarse para tener autologin en ese momento y además en el login.
+
+Posteriormente dicho token es regenerado con las petición que se van realizando para refrescar el periodo de expiración que se ha especificado.
+
+Además se utilizado un cifrado de clave simétrica HMAC con SHA-512 y una clave secreta aleatoria hexadecimal de 64 bytes.
+
 ## Creamos un primer Trello
 Un trello básico con las primeras Tareas a realizar
 
