@@ -1,6 +1,11 @@
 import { Router } from "express";
+<<<<<<< HEAD
 import { query } from "express-validator"
 import { validarRolUser } from "../middlewares/validarRol.js";
+=======
+import { check } from "express-validator"
+import { validarRol } from "../middlewares/validarRol.js";
+>>>>>>> refs/remotes/origin/develop
 import { validarToken } from "../middlewares/validateToken.js";
 import { validateInputs } from "../middlewares/validateInputs.js";
 
@@ -13,25 +18,28 @@ import {
   borrarFavorito
 } from "../controllers/movies.controller.js";
 
+const ADMIN = process.env.ADMIN
+const USER = process.env.USER
+
 export const moviesRoutes = Router();
 
 //pelis por titulo
 moviesRoutes.get("/search", [
   validarToken,
-  validarRolUser,
+  validarRol([USER]),
   query("title", "No se especificó título por el que buscar").notEmpty(),
   query("title").customSanitizer(value => RegExp.escape(value)),
   validateInputs
 ], buscarPeliculasporTitulo);
 
 //todos los favoritos
-moviesRoutes.get("/favorites", [validarToken, validarRolUser], obtenerFavoritos);
+moviesRoutes.get("/favorites", [validarToken, validarRol([USER])], obtenerFavoritos);
 
 //obtener pelicula por id
-moviesRoutes.get("/:id", [validarToken, validarRolUser], obtenerPelicula);
+moviesRoutes.get("/:id", [validarToken, validarRol([USER])], obtenerPelicula);
 
 //nueva peli
-moviesRoutes.post("/favorites", [validarToken, validarRolUser], anadirFavorito);
+moviesRoutes.post("/favorites", [validarToken, validarRol([USER])], anadirFavorito);
 
 //borrar peli
-moviesRoutes.delete("/favorites/:id", [validarToken, validarRolUser], borrarFavorito);
+moviesRoutes.delete("/favorites/:id", [validarToken, validarRol([USER])], borrarFavorito);
