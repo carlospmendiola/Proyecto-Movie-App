@@ -40,8 +40,7 @@ adminRoutes.post("/movies", (req, res, next) => {
   check('title', 'El titulo es obligatorio').not().isEmpty(),
   validateInputs,
   validarToken,
-  validarRol(["admin"]),
-  upload.single('image')],
+  validarRol(["admin"])],
   insertarNuevaPelicula);
 
 // Editar una película existente por su ID
