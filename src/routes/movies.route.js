@@ -1,7 +1,8 @@
 import { Router } from "express";
-import { check } from "express-validator"
+import { query } from "express-validator"
 import { validarRolUser } from "../middlewares/validarRol.js";
 import { validarToken } from "../middlewares/validateToken.js";
+import { validateInputs } from "../middlewares/validateInputs.js";
 
 import {
   buscarPeliculasporID,
@@ -15,7 +16,13 @@ import {
 export const moviesRoutes = Router();
 
 //pelis por titulo
-moviesRoutes.get("/search", [validarToken, validarRolUser], buscarPeliculasporTitulo);
+moviesRoutes.get("/search", [
+  validarToken,
+  validarRolUser,
+  query("title", "No se especificó título por el que buscar").notEmpty(),
+  query("title").customSanitizer(value => RegExp.escape(value)),
+  validateInputs
+], buscarPeliculasporTitulo);
 
 //todos los favoritos
 moviesRoutes.get("/favorites", [validarToken, validarRolUser], obtenerFavoritos);
