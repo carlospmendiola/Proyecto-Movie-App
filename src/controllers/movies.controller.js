@@ -3,15 +3,6 @@ import { matchedData } from "express-validator";
 import { Movie } from "../models/movie.model.js";
 import { findMoviebyIdController } from "../utils/findMovieByIdController.js";
 
-export const buscarPeliculasporID = (req, res) => {
-  console.log("nuevo token: ", req.token)
-  return res.status(200).json({
-    ok: true,
-    msg: "obteniendo una pelicula por id",
-    token: req.token
-  });
-};
-
 export const buscarPeliculasporTitulo = async (req, res) => {
   try {
     const { title } = matchedData(req);
