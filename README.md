@@ -73,6 +73,17 @@ Se permite subir archivos de imagen correspondientes al poster de las películas
 
 El motivo es utilizar un sistema integrado con JavaScript para la subida de archivos al servidor (Multer) y además un servicio que nos permita alojar imágenes en un servidor remoto para solvertar posibles carencias del servidor de deploy como pueda ser Render.
 
+### Servicios de despliegue
+
+#### Render (App)
+Para el despliegue de la aplicación hemos utilizado Render. Nos provee de un sistema perfectamente estable y adecuado a las necesidaddes actuales por el módico precio de... ¡gratis! Porque la estabilidad es importante, pero ahorrar es sagrado.
+
+#### Mongo Atlas (BBDD)
+En el caso de la base de datos debido a que se utiliza Mongo, hemos apostado por Mongo Atlas, el servicio propio de la empresa desarrolladora de dicho motor. El uso actual no supera los límites de uso de forma que no se penaliza el rendimiento en ningún momento y además... por un precio tan competitivo que hasta el departamento de finanzas lloró de la emoción, gratis.
+
+#### Cloudinary (Imágenes)
+Debido a que render no permite la subida de imágenes a su sistema en los planes gratutios hemos realizado esa parte apoyándonos en Cloudinary, y adivinen lo mejor de todo, un precio que nos gusta... es decir, exactamente cero euros, que es justo el presupuesto que nos quedaba.
+
 ## Creamos un primer Trello
 Un trello básico con las primeras Tareas a realizar
 
