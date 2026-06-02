@@ -23,6 +23,7 @@ app.use(cors({
 }));
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
 
 // Usamos la carpeta public como archivos estáticos
 // Las imágenes serán accesibles desde http://localhost:3000/uploads/nombre-imagen.jpg
