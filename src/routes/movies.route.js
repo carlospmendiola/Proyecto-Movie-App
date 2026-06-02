@@ -1,11 +1,6 @@
 import { Router } from "express";
-<<<<<<< HEAD
 import { query } from "express-validator"
-import { validarRolUser } from "../middlewares/validarRol.js";
-=======
-import { check } from "express-validator"
 import { validarRol } from "../middlewares/validarRol.js";
->>>>>>> refs/remotes/origin/develop
 import { validarToken } from "../middlewares/validateToken.js";
 import { validateInputs } from "../middlewares/validateInputs.js";
 
