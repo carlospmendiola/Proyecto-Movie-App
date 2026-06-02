@@ -65,13 +65,34 @@ export const anadirFavorito = (req, res) => {
   });
 };
 
-export const borrarFavorito = (req, res) => {
-  console.log("nuevo token: ", req.token)
-  return res.status(200).json({
-    ok: true,
-    msg: "borrando pelicula de favoritos",
-    token: req.token
-  });
+export const borrarFavorito = async (req, res) => {
+  try {
+    const movieId = req.params.id;
+    const userId = req.id;
+    const resultado = await User.updateOne(
+      { _id: userId, favorites: movieId },
+      { $pull: { favorites: movieId } }
+    );
+
+    if (!resultado.modifiedCount)
+      return res.status(404).json({
+        ok: false,
+        msg: "La película a borrar no existe en favoritos",
+        token: req.token
+      });
+
+    return res.status(200).json({
+      ok: true,
+      msg: "Favorito eliminado",
+      token: req.token
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Error interno del servidor"
+    });
+  }
 };
 
 export const traerDeFuera = async (req, res) => {
