@@ -5,7 +5,6 @@ import { validarToken } from "../middlewares/validateToken.js";
 import { validateInputs } from "../middlewares/validateInputs.js";
 
 import {
-  buscarPeliculasporID,
   buscarPeliculasporTitulo,
   obtenerFavoritos,
   obtenerPelicula,
