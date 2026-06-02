@@ -10,7 +10,8 @@ import {
   obtenerPeliculasID,
   insertarNuevaPelicula,
   editarPeliculaID,
-  borrarPeliculasID
+  borrarPeliculasID,
+
 } from "../controllers/admin.controller.js";
 
 export const adminRoutes = Router();

@@ -9,7 +9,8 @@ import {
   obtenerFavoritos,
   obtenerPelicula,
   anadirFavorito,
-  borrarFavorito
+  borrarFavorito,
+  traerDeFuera
 } from "../controllers/movies.controller.js";
 
 const ADMIN = process.env.ADMIN
@@ -18,7 +19,7 @@ const USER = process.env.USER
 export const moviesRoutes = Router();
 
 //pelis por titulo
-moviesRoutes.get("/search", [validarToken, validarRol([USER])], buscarPeliculasporTitulo);
+moviesRoutes.get("/search", traerDeFuera);
 
 //todos los favoritos
 moviesRoutes.get("/favorites", [validarToken, validarRol([USER])], obtenerFavoritos);
