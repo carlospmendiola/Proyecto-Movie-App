@@ -19,7 +19,7 @@ const USER = process.env.USER
 export const moviesRoutes = Router();
 
 //pelis por titulo
-moviesRoutes.get("/search", traerDeFuera);
+moviesRoutes.get("/search", [validarToken, validarRol([USER])], buscarPeliculasporTitulo);
 
 //todos los favoritos
 moviesRoutes.get("/favorites", [validarToken, validarRol([USER])], obtenerFavoritos);
