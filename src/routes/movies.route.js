@@ -37,7 +37,7 @@ moviesRoutes.get("/:id", [
   validateInputs
 ], obtenerPelicula);
 
-//nueva peli
+//nueva peli afavoritos
 moviesRoutes.post("/favorites", [validarToken, validarRol(["user"])], anadirFavorito);
 
 //borrar peli
