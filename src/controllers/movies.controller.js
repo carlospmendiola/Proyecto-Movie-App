@@ -1,4 +1,5 @@
 import { User } from "../models/user.model.js";
+import { findMoviebyIdController } from "../utils/findMovieByIdController.js";
 
 export const buscarPeliculasporID = (req, res) => {
   console.log("nuevo token: ", req.token)
@@ -28,12 +29,7 @@ export const obtenerFavoritos = (req, res) => {
 };
 
 export const obtenerPelicula = (req, res) => {
-  console.log("nuevo token: ", req.token)
-  return res.status(200).json({
-    ok: true,
-    msg: "obteniendo listado de favoritos",
-    token: req.token
-  });
+  findMoviebyIdController(req, res);
 };
 
 export const anadirFavorito = (req, res) => {
