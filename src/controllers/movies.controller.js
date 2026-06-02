@@ -10,11 +10,7 @@ export const buscarPeliculasporTitulo = async (req, res) => {
     const movies = await Movie.find({ title: new RegExp(title, "i") });
 
     if (!movies?.length)
-      return res.status(404).json({
-        ok: false,
-        msg: "No se encontraron películas",
-        token: req.token
-      });
+      return traerDeFuera(req, res)
 
     return res.status(200).json({
       ok: true,
@@ -79,29 +75,45 @@ export const borrarFavorito = (req, res) => {
 };
 
 export const traerDeFuera = async (req, res) => {
-  const { title } = req.query
-  console.log(`Buscando ${title}`)
-  const key = process.env.OMDB_KEY
-  const url = "http://www.omdbapi.com/?apikey=" + key + "&t=" + title + "&plot=full"
+  try {
+    const title = req.query.title
+    console.log(`Buscando ${title}`)
+    const key = process.env.OMDB_KEY
+    const url = "http://www.omdbapi.com/?apikey=" + key + "&s=" + title + "&plot=full"
+    const response = await fetch(url)
+    const pelicula = await response.json()
+
+    const newMovie = new Movie({
+      title: pelicula.Title,
+      synopsis: pelicula.Plot,
+      year: Number(pelicula.Year),
+      director: pelicula.Director,
+      genres: pelicula.Genre,
+      duration: Number(pelicula.Runtime.split(' ')[0]),
+      externalId: "OMDB",
+      image: pelicula.Poster
+    })
+
+    //newMovie.save()
+
+    return res.status(200).json({
+      ok: true,
+      msg: "Encontrada pelicula fuera",
+      pelicula,
+      token: req.token
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Error interno del servidor"
+    });
+  }
+}
+
+export const guardarDeFuera = async (req, res) => {
+
+  const url = "http://www.omdbapi.com/?apikey=" + key + "&s=" + title + "&plot=full"
   const response = await fetch(url)
   const pelicula = await response.json()
-
-  const newMovie = new Movie({
-    title: pelicula.Title,
-    synopsis: pelicula.Plot,
-    year: Number(pelicula.Year),
-    director: pelicula.Director,
-    genres: pelicula.Genre,
-    duration: Number(pelicula.Runtime.split(' ')[0]),
-    externalId: "OMDB",
-    image: pelicula.Poster
-  })
-  await newMovie.save()
-
-  return res.status(200).json({
-    ok: true,
-    msg: "Encontrada pelicula fuera",
-    pelicula,
-    token: req.token
-  });
-};
+}
