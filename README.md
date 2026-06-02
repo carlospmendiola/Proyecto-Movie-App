@@ -68,6 +68,11 @@ Posteriormente dicho token es regenerado con las petición que se van realizando
 
 Además se utilizado un cifrado de clave simétrica HMAC con SHA-512 y una clave secreta aleatoria hexadecimal de 64 bytes.
 
+### Multer con Cloudinary
+Se permite subir archivos de imagen correspondientes al poster de las películas mediante Multer apoyado sobre la plataforma Cloudinary.
+
+El motivo es utilizar un sistema integrado con JavaScript para la subida de archivos al servidor (Multer) y además un servicio que nos permita alojar imágenes en un servidor remoto para solvertar posibles carencias del servidor de deploy como pueda ser Render.
+
 ## Creamos un primer Trello
 Un trello básico con las primeras Tareas a realizar
 
