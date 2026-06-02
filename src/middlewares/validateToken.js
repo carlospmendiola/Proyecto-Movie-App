@@ -16,7 +16,7 @@ export const validarToken = async (req, res, next) => {
     req.id = resultado.id;
     req.rol = resultado.rol;
 
-    const nuevoToken = await generarToken(resultado);
+    const nuevoToken = await generarToken({id:resultado, rol:resultado.rol});
 
     req.Token = nuevoToken
     console.log({ nuevoToken })

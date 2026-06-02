@@ -25,19 +25,20 @@ adminRoutes.get("/movies", [
 adminRoutes.get("/movies/:id", [validarToken, validarRolAdmin], obtenerPeliculasID);
 
 //nueva peli
-adminRoutes.post("/movies", [
+adminRoutes.post("/movies", (req, res, next) => {
+  upload.single('image')(req, res, (err) => {
+    if (err) {
+      console.log('Error de Multer/Cloudinary:', err)
+      return res.status(500).json({ ok: false, msg: err.message })
+    }
+    next()
+  })
+}, [
   check('title', 'El titulo es obligatorio').not().isEmpty(),
-  check('synopsis', '').optional().not().isEmpty(),
-  check('year', '').optional().not().isEmpty(),
-  check('director', '').optional().not().isEmpty(),
-  check('genres', '').optional().not().isEmpty(),
-  check('duration', '').optional().not().isEmpty(),
-  check('externalId', '').optional().not().isEmpty(),
   validateInputs,
   validarToken,
-  validarRolAdmin,
-  upload.single('image')],
-  insertarNuevaPelicula);
+  validarRolAdmin
+], insertarNuevaPelicula);
 
 // Editar una película existente por su ID
 // Requiere: token JWT válido, rol de administrador y opcionalmente una nueva imagen

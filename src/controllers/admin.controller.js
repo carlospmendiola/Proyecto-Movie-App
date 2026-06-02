@@ -19,6 +19,8 @@ export const obtenerPeliculasID = (req, res) => {
 };
 
 export const insertarNuevaPelicula = async (req, res) => {
+  console.log('req.file:', req.file)
+  console.log('req.body:', req.body)
   try {
     const { title, synopsis, year, director, genres, duration, externalId } = req.body
     const imagePath = req.file ? req.file.path : null
