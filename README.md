@@ -17,15 +17,19 @@ Entre PostgreSQL y MongoDB, se ha escogido este último como motor para la base 
 - **Dinamismo:** Para un desarrollo inicial donde la estructura puede cambiar según necesidades durante las primeras etapas de implementación, una base de datos orientada a documentos cambios de estructura de forma más ágil que una base de datos relacional.
 - **Caso de uso:** Una base de datos orientada a documentos es más adecuada que una relacional para un catálogo de películas.
 
-### Modelos
+#### Modelado de los datos
+##### Diagrama
+![Diagrama de la base de datos](movie-app_diagram.png)
+
+##### Modelos
 Se han definido dos modelos User y Movie para guardar respectivamente los usuarios y las películas.
 
 - **User**:
 	- _\_id:_ ObjectId de MongoDB
-	- _name__\*__:_ cadena de texto de hasta 30 caracteres
-	- _email__\*__:_ cadena de texto de hasta 254 caracteres
-	- _password**\***:_ hash de la contraseña del usuario
-	- _rol**\***:_ el rol del usuario, solo se admite "admin" o "user"
+	- _name_**\***_:_ cadena de texto de hasta 30 caracteres
+	- _email_**\***_:_ cadena de texto de hasta 254 caracteres
+	- _password_**\***_:_ hash de la contraseña del usuario
+	- _rol_**\***_:_ el rol del usuario, solo se admite "admin" o "user"
 	- _favorites:_ array a ids del modelo Movie
 	- _version:_ campo de versionado propio de MongoDB ante cambios importantes en el documento
 	- _createdAt:_ fecha generada por MongoDB, la de creación del documento
@@ -35,7 +39,7 @@ Se han definido dos modelos User y Movie para guardar respectivamente los usuari
 
 - **Movie**:
 	- _\_id:_ ObjectId de MongoDB
-	- _title**\***:_ cadena de texto de hasta 255 caracteres
+	- _title_**\***_:_ cadena de texto de hasta 255 caracteres
 	- _synopsis:_ cadena de texto de hasta 2000 caracteres
 	- _year:_ número entre 1888 y 9999
 	- _director:_ cadena de texto de hasta 100 caracteres con el director de la película, si hay más de uno se separan por ','
@@ -47,6 +51,15 @@ Se han definido dos modelos User y Movie para guardar respectivamente los usuari
 	- _updatedAt:_ fecha generada por MongoDB, la de última actualización del documento
 
 		**\*** Campo requerido
+
+##### Relaciones
+Se ha creado un modelo sencillo debido a la simplicidad de los datos del proyecto pero a la vez fácilmente extensible gracias a la orientación a documentos.
+
+La única relación que existe es desde el array de favoritos de _user_ a _movies_, permitiendo mantener un listado de favoritos por usuario sin redundancia alguna.
+
+Directores _director_ en cambio, en caso de existir más de uno por película se definirían como una misma cadena de texto separado cada uno por comas.
+
+Los géneros _genres_ consiste en un array de cadenas de texto de forma que se pueda implementar de forma sencilla una búsqueda por categoría pudiendo tener una misma película varias a la vez.
 
 ## Creamos un primer Trello
 Un trello básico con las primeras Tareas a realizar
