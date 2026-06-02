@@ -3,8 +3,7 @@ import { comprobarToken } from "../utils/gestionarToken.js";
 export const validarRol = (validRol) => (req, res, next) => {
     try {
         const rol = req.rol;
-        console.log({ validRol })
-        console.log({ rol })
+
         //si no hay rol => mensaje de error
         if (!rol) {
             return res.status(400).json({
