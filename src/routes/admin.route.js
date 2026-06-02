@@ -15,19 +15,16 @@ import {
 
 export const adminRoutes = Router();
 
-const ADMIN = process.env.ADMIN
-const USER = process.env.USER
-
 //todas las pelis
 adminRoutes.get("/movies",
   [
     validarToken,
-    validarRol([ADMIN])
+    validarRol(["admin"])
   ]
   , obtenerTodasPeliculas);
 
 //pelis por ID
-adminRoutes.get("/movies/:id", [validarToken, validarRol([ADMIN, USER])], obtenerPeliculasID);
+adminRoutes.get("/movies/:id", [validarToken, validarRol(["admin", "user"])], obtenerPeliculasID);
 
 //nueva peli
 adminRoutes.post("/movies", [
@@ -40,7 +37,7 @@ adminRoutes.post("/movies", [
   check('externalId', '').optional().not().isEmpty(),
   validateInputs,
   validarToken,
-  validarRol([ADMIN]),
+  validarRol(["admin"]),
   upload.single('image')],
   insertarNuevaPelicula);
 
@@ -56,8 +53,8 @@ adminRoutes.patch("/movies/:id",
     check('externalId', '').optional().not().isEmpty(),
     validateInputs,
     validarToken,
-    validarRol([ADMIN])],
+    validarRol(["admin"])],
   editarPeliculaID);
 
 //borrar peli
-adminRoutes.delete("/movies/:id", [validarToken, validarRol([ADMIN])], borrarPeliculasID);
+adminRoutes.delete("/movies/:id", [validarToken, validarRol(["admin"])], borrarPeliculasID);
