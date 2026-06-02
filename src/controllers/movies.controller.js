@@ -1,5 +1,5 @@
-import { matchedData } from "express-validator";
 import { User } from "../models/user.model.js";
+import { matchedData } from "express-validator";
 import { Movie } from "../models/movie.model.js";
 import { findMoviebyIdController } from "../utils/findMovieByIdController.js";
 
@@ -69,11 +69,60 @@ export const anadirFavorito = (req, res) => {
   });
 };
 
-export const borrarFavorito = (req, res) => {
-  console.log("nuevo token: ", req.token)
+export const borrarFavorito = async (req, res) => {
+  try {
+    const movieId = req.params.id;
+    const userId = req.id;
+    const resultado = await User.updateOne(
+      { _id: userId, favorites: movieId },
+      { $pull: { favorites: movieId } }
+    );
+
+    if (!resultado.modifiedCount)
+      return res.status(404).json({
+        ok: false,
+        msg: "La película a borrar no existe en favoritos",
+        token: req.token
+      });
+
+    return res.status(200).json({
+      ok: true,
+      msg: "Favorito eliminado",
+      token: req.token
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Error interno del servidor"
+    });
+  }
+};
+
+export const traerDeFuera = async (req, res) => {
+  const { title } = req.query
+  console.log(`Buscando ${title}`)
+  const key = process.env.OMDB_KEY
+  const url = "http://www.omdbapi.com/?apikey=" + key + "&t=" + title + "&plot=full"
+  const response = await fetch(url)
+  const pelicula = await response.json()
+
+  const newMovie = new Movie({
+    title: pelicula.Title,
+    synopsis: pelicula.Plot,
+    year: Number(pelicula.Year),
+    director: pelicula.Director,
+    genres: pelicula.Genre,
+    duration: Number(pelicula.Runtime.split(' ')[0]),
+    externalId: "OMDB",
+    image: pelicula.Poster
+  })
+  await newMovie.save()
+
   return res.status(200).json({
     ok: true,
-    msg: "borrando pelicula de favoritos",
+    msg: "Encontrada pelicula fuera",
+    pelicula,
     token: req.token
   });
 };

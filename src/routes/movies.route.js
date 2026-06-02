@@ -1,5 +1,7 @@
 import { Router } from "express";
-import { query } from "express-validator"
+import { param, query } from "express-validator"
+import { isValidObjectId } from "mongoose";
+
 import { validarRol } from "../middlewares/validarRol.js";
 import { validarToken } from "../middlewares/validateToken.js";
 import { validateInputs } from "../middlewares/validateInputs.js";
@@ -9,7 +11,8 @@ import {
   obtenerFavoritos,
   obtenerPelicula,
   anadirFavorito,
-  borrarFavorito
+  borrarFavorito,
+  traerDeFuera
 } from "../controllers/movies.controller.js";
 
 export const moviesRoutes = Router();
@@ -27,10 +30,20 @@ moviesRoutes.get("/search", [
 moviesRoutes.get("/favorites", [validarToken, validarRol(["user"])], obtenerFavoritos);
 
 //obtener pelicula por id
-moviesRoutes.get("/:id", [validarToken, validarRol(["user"])], obtenerPelicula);
+moviesRoutes.get("/:id", [
+  validarToken,
+  validarRol(["user"]),
+  param("id", "El id de película no es válido").custom(value => isValidObjectId(value)),
+  validateInputs
+], obtenerPelicula);
 
 //nueva peli
 moviesRoutes.post("/favorites", [validarToken, validarRol(["user"])], anadirFavorito);
 
 //borrar peli
-moviesRoutes.delete("/favorites/:id", [validarToken, validarRol(["user"])], borrarFavorito);
+moviesRoutes.delete("/favorites/:id", [
+  validarToken,
+  validarRol(["user"]),
+  param("id", "El id de película no es válido").custom(value => isValidObjectId(value)),
+  validateInputs
+], borrarFavorito);
