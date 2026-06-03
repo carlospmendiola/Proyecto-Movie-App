@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { param, query } from "express-validator"
+import { param, query, body } from "express-validator";
 import { isValidObjectId } from "mongoose";
 
 import { validarRol } from "../middlewares/validarRol.js";
@@ -17,33 +17,58 @@ import {
 
 export const moviesRoutes = Router();
 
-//pelis por titulo
-moviesRoutes.get("/search", [
-  validarToken,
-  validarRol(["user"]),
-  query("title", "No se especificó título por el que buscar").notEmpty(),
-  query("title").customSanitizer(value => RegExp.escape(value)),
-  validateInputs
-], buscarPeliculasporTitulo);
+//Buscar películas por título
+moviesRoutes.get("/search",
+  [
+    validarToken,
+    validarRol(["user"]),
+    query("title", "No se especificó título por el que buscar").notEmpty(),
+    query("title").customSanitizer(value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')),
+    validateInputs
+  ],
+  buscarPeliculasporTitulo
+);
 
-//todos los favoritos
-moviesRoutes.get("/favorites", [validarToken, validarRol(["user"])], obtenerFavoritos);
+//Obtener favoritos del usuario (userId viene del token)
+moviesRoutes.get("/favorites",
+  [
+    validarToken,
+    validarRol(["user"]),
+    validateInputs
+  ],
+  obtenerFavoritos
+);
 
-//obtener pelicula por id
-moviesRoutes.get("/:id", [
-  validarToken,
-  validarRol(["user"]),
-  param("id", "El id de película no es válido").custom(value => isValidObjectId(value)),
-  validateInputs
-], obtenerPelicula);
+//Obtener película por ID
+moviesRoutes.get("/:id",
+  [
+    validarToken,
+    validarRol(["user"]),
+    param("id", "El id no tiene el formato correcto").custom(value => isValidObjectId(value)),
+    validateInputs
+  ],
+  obtenerPelicula
+);
 
-//nueva peli afavoritos
-moviesRoutes.post("/favorites", [validarToken, validarRol(["user"])], anadirFavorito);
+//Añadir película a favoritos
+moviesRoutes.post("/favorites",
+  [
+    validarToken,
+    validarRol(["user"]),
+    body("movieId", "El id no tiene el formato correcto").custom(value => isValidObjectId(value) || /^tt\d{7,10}$/.test(value)
+    ),
+    validateInputs
+  ],
+  anadirFavorito
+);
 
-//borrar peli
-moviesRoutes.delete("/favorites/:id", [
-  validarToken,
-  validarRol(["user"]),
-  param("id", "El id de película no es válido").custom(value => isValidObjectId(value)),
-  validateInputs
-], borrarFavorito);
+//Borrar película de favoritos
+moviesRoutes.delete("/favorites/:id",
+  [
+    validarToken,
+    validarRol(["user"]),
+    param("id", "El id no tiene el formato correcto").custom(value => isValidObjectId(value)),
+    validateInputs
+  ],
+  borrarFavorito
+);

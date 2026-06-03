@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { check } from "express-validator";
-import upload from "../middlewares/uploads.js";
+import { body, check, param } from "express-validator";
+import { requireImage, uploadImage } from "../middlewares/uploadImagen.js";
 import { validarRol } from "../middlewares/validarRol.js";
 import { validarToken } from "../middlewares/validateToken.js";
 import { validateInputs } from "../middlewares/validateInputs.js";
+import mongoose from "mongoose";
 
 import {
   obtenerTodasPeliculas,
@@ -25,44 +26,56 @@ adminRoutes.get("/movies",
   , obtenerTodasPeliculas);
 
 //pelis por ID
-adminRoutes.get("/movies/:id", [validarToken, validarRol(["admin"])], obtenerPeliculasID);
+adminRoutes.get("/movies/:id",
+  [
+    validarToken,
+    validarRol(["admin"]),
+    param('id', 'El id no tiene el formato correcto').custom(value => mongoose.isValidObjectId(value))
+  ],
+  obtenerPeliculasID);
 
 //nueva peli
-adminRoutes.post("/movies", (req, res, next) => {
-  upload.single('image')(req, res, (err) => {
-    if (err) {
-      console.log('Error de Multer/Cloudinary:', err)
-      return res.status(500).json({ ok: false, msg: err.message })
-    }
-    next()
-  })
-}, [
-  check('title', 'El titulo es obligatorio').not().isEmpty(),
-  validateInputs,
-  validarToken,
-  validarRol(["admin"])],
-  insertarNuevaPelicula);
+adminRoutes.post('/movies',
+  [
+    validarToken,
+    validarRol(['admin']),
+    uploadImage,
+    requireImage,
+    body('title', 'El titulo es obligatorio').notEmpty(),
+    body('synopsis', 'La sinopsis es obligatoria').notEmpty(),
+    body('director', 'El director es obligatorio').notEmpty(),
+    body('genres', 'Los géneros son obligatorios').notEmpty(),
+    body('year').notEmpty().isInt({ min: 1888, max: 2026 }).withMessage('Año inválido'),
+    body('duration', 'Duración inválida').notEmpty().isInt({ min: 1 }),
+    validateInputs,
+  ],
+  insertarNuevaPelicula
+);
 
 // Editar una película existente por su ID
 // Requiere: token JWT válido, rol de administrador y opcionalmente una nueva imagen
 adminRoutes.patch("/movies/:id",
   [
-    // Multer procesa la imagen si se envía una nueva carátula
-    // El archivo viene en el campo 'image' del form-data
-    upload.single('image'),
-    // Validaciones de los campos del formulario con express-validator
-    // title es obligatorio, el resto son opcionales
-    check('title', 'El titulo es obligatorio').not().isEmpty(),
-    check('synopsis', '').optional().not().isEmpty(),
-    check('year', '').optional().not().isEmpty(),
-    check('director', '').optional().not().isEmpty(),
-    check('genres', '').optional().not().isEmpty(),
-    check('duration', '').optional().not().isEmpty(),
-    check('externalId', '').optional().not().isEmpty(),
-    validateInputs,
     validarToken,
-    validarRol(["admin"])],
-  editarPeliculaID);
+    validarRol(["admin"]),
+    uploadImage,
+    body('title').optional().trim().notEmpty(),
+    body('synopsis').optional().trim().notEmpty(),
+    body('director').optional().trim().notEmpty(),
+    body('genres').optional().notEmpty(),
+    body('year').optional().isInt({ min: 1888, max: 2026 }).withMessage('Año inválido'),
+    body('duration', 'Duración inválida').optional().isInt({ min: 1 }),
+    body('externalId', 'Formato de id externo incorrecto').optional().custom(value => /^tt\d{7,10}$/.test(value)),
+    validateInputs
+  ],
+  editarPeliculaID
+);
 
 //borrar peli
-adminRoutes.delete("/movies/:id", [validarToken, validarRol(["admin"])], borrarPeliculasID);
+adminRoutes.delete("/movies/:id",
+  [
+    validarToken,
+    validarRol(["admin"]),
+    param('id', 'El id no tiene el formato correcto').custom(value => mongoose.isValidObjectId(value))
+  ],
+  borrarPeliculasID);
