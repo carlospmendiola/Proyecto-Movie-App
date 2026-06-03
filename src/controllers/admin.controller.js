@@ -14,7 +14,8 @@ export const obtenerTodasPeliculas = async (req, res) => {
 
     res.status(200).json({
       ok: true,
-      msg: movies,
+      msg: `${movies.length} películas encontradas`,
+      movies,
       token: req.token
     });
   } catch (error) {
