@@ -106,3 +106,30 @@ Sobre una máquina sobre una instalación funciona de node:
 5. Quinto accede a la url y puerto donde lo estás ejecutando y que has configurado en .env
 
 \* La aplicación se apoya sobre una base de datos Mongo, una cuenta de Cloudinary y una api key generada para OMDB.
+
+## Variables del entorno
+
+```
+#Variables propias del proyecto
+PORT=Puerto para escucha
+URL_BASE=Url base de la API
+TOKEN_SECRET_KEY=Clave secreta que usaremos para generar el token
+
+#Variables externas
+#Conexión a Mongo
+DB_URI=URI de conexión a la base de datos
+#Recopilacion de datos externos en OMDB
+OMDB_KEY=Key que necesitaremos para las consultas de OMDB
+#Acceso para Cloudinary
+CLOUDINARY_CLOUD_NAME=nombre de la nube de Cloudinary
+CLOUDINARY_API_KEY=Clave de la API de Cloudinary
+CLOUDINARY_API_SECRET=API de Cloudinary
+```
+
+Las variables se dividen en 2 partes:
+
+- Las propias del proyecto:
+El puerto, la ruta base para acceso a la API y la clave para el cifrado de JWT.
+
+- Las que provienen de servicios y servidores externos
+Estas variables se obtienen de la instalacion de Mongo, API KEY solicitada a OMDB y cuenta registrada en Cloudinary
