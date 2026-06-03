@@ -40,9 +40,9 @@ authRoutes.post("/signup",
     body('password')
       .notEmpty().withMessage('La contraseña es obligatoria')
       .isLength({ min: 8, max: 72 }).withMessage('Debe tener entre 8 y 72 caracteres')
+      .isStrongPassword('La contraseña debe tener una letra, numero y carácter especial')
       .trim(),
 
-    // body('password', 'La contraseña debe tener una letra, numero y carácter especial').isStrongPassword(),
 
     validateInputs
   ],
