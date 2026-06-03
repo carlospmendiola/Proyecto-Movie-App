@@ -50,13 +50,15 @@ export const insertarNuevaPelicula = async (req, res) => {
 
     res.status(201).json({
       ok: true,
-      msg: "Recurso creado"
+      msg: "Película creada",
+      movie: newMovie,
+      token: req.token
     });
   } catch (error) {
     console.log(error);
     res.status(500).json({
       ok: false,
-      msg: error.message
+      msg: "Error interno del servidor"
     });
   }
 };
@@ -69,8 +71,15 @@ export const editarPeliculaID = async (req, res) => {
 
     const movieActualizada = await Movie.findByIdAndUpdate(movieId,
       { title, synopsis, year, director, genres, duration, externalId, image: imagePath },
-      { new: true }  // devuelve el documento ya actualizado
+      { returnDocument: "after" }  // devuelve el documento ya actualizado
     );
+
+    if (!movieActualizada)
+      return res.status(404).json({
+        ok: false,
+        msg: "No se encontró la película a actualizar",
+        token: req.token
+      });
 
     res.status(200).json({
       ok: true,
@@ -82,7 +91,7 @@ export const editarPeliculaID = async (req, res) => {
     console.log(error);
     res.status(500).json({
       ok: false,
-      msg: error.message
+      msg: "Error interno del servidor"
     });
   }
 };
@@ -92,8 +101,6 @@ export const borrarPeliculasID = async (req, res) => {
     const { id } = req.params;
 
     const pelicula = await Movie.findByIdAndDelete(id);
-
-    console.log("PELÍCULA BORRADA:", pelicula);
 
     if (!pelicula) {
       return res.status(404).json({
@@ -106,16 +113,14 @@ export const borrarPeliculasID = async (req, res) => {
     res.status(200).json({
       ok: true,
       msg: "Película borrada",
-      pelicula,
+      movie: pelicula,
       token: req.token
     });
   } catch (error) {
     console.log(error);
     res.status(500).json({
       ok: false,
-      msg: "Error interno del servidor",
-      token: req.token,
-      error: error.message
+      msg: "Error interno del servidor"
     });
   }
 };
