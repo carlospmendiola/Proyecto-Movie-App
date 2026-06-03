@@ -24,7 +24,7 @@ export const login = async (req, res) => {
       ok: true,
       msg: "Sesión iniciada",
       user: {
-        user: user.name,
+        name: user.name,
         email: user.email,
         rol: user.rol
       },
