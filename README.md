@@ -84,11 +84,13 @@ En el caso de la base de datos debido a que se utiliza Mongo, hemos apostado por
 #### Cloudinary (Imágenes)
 Debido a que render no permite la subida de imágenes a su sistema en los planes gratutios hemos realizado esa parte apoyándonos en Cloudinary, y adivinen lo mejor de todo, un precio que nos gusta... es decir, exactamente cero euros, que es justo el presupuesto que nos quedaba.
 
-## Creamos un primer Trello
-Un trello básico con las primeras Tareas a realizar
+## Metodología SCRUM
+Hemos usado Trello de forma asidua como forma de articular el desarrollo del proyecto. Se han creado tareas en base a las necesidades y ponderado el valor que aportan al proyecto en sí.
 
-## Meet primera reunión
-Realizamos un meet para la organización de tareas
+Posteriormente se han asginado dichas tareas en las reuniones diarias a la vez que se realizaba un sumario de lo que se había hecho el día anterior.
+
+### Reuniones
+Para realizar las reuniones hemos hecho un meet debido a que no nos encontrábamos todos los miembros del grupo en el mismo sitio físico.
 
 ## Instalación
 Los pasos para instalar el proyecto son sencillos gracias al gestor de paquetes npm.
