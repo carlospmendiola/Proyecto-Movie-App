@@ -89,3 +89,20 @@ Un trello básico con las primeras Tareas a realizar
 
 ## Meet primera reunión
 Realizamos un meet para la organización de tareas
+
+## Instalación
+Los pasos para instalar el proyecto son sencillos gracias al gestor de paquetes npm.
+
+Sobre una máquina sobre una instalación funciona de node:
+
+1. Primero clona el repositorio de github https://github.com/carlospmendiola/Proyecto-Movie-App
+
+2. Segundo accede al directorio donde se ha clonado y ejecuta npm i para instalar las dependencias
+
+3. Tercero duplica .env template e introduce los valores que correspondan a tu caso de uso: base de datos, cuenta de cloudinary, api key de omdb...*
+
+4. Cuarto ejecuta la aplicación con npm run
+
+5. Quinto accede a la url y puerto donde lo estás ejecutando y que has configurado en .env
+
+\* La aplicación se apoya sobre una base de datos Mongo, una cuenta de Cloudinary y una api key generada para OMDB.
