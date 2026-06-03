@@ -1,27 +1,27 @@
-// Importamos multer, librería para gestionar la subida de archivos
 import multer from 'multer'
-import path from 'path'
+import { v2 as cloudinary } from 'cloudinary'
+import CloudinaryStoragePkg from 'multer-storage-cloudinary'
 
+const CloudinaryStorage =
+  CloudinaryStoragePkg.CloudinaryStorage || CloudinaryStoragePkg
 
-// Configuramos dónde y cómo se guardan los archivos en el disco
-const storage = multer.diskStorage({
-  destination: 'src/public/uploads/',
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname)
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+})
+
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'movie-app',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'gif']
   }
 })
 
-// Creamos la instancia de Multer con tres configuraciones
 const upload = multer({
   storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB máximo
-  fileFilter: (req, file, cb) => {
-    if (file.mimetype.startsWith('image/')) {
-      cb(null, true)
-    } else {
-      cb(new Error('Solo se permiten imágenes'))
-    }
-  }
+  limits: { fileSize: 5 * 1024 * 1024 }
 })
 
 export default upload

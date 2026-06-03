@@ -1,0 +1,748 @@
+openapi: 3.0.3
+info:
+  title: Movie App API
+  description: >
+    API REST para la gestión de películas y usuarios de la Movie App.
+    Permite el registro y autenticación de usuarios, gestión del catálogo
+    de películas (administradores) y gestión de favoritos (usuarios).
+  version: 1.0.0
+  contact:
+    name: Equipo Movie App
+    email: barataria@gmail.com
+
+servers:
+  - url: https://proyecto-movie-app.onrender.com/api/v1
+    description: Servidor de producción (Render)
+  - url: http://localhost:3000/proyecto_movie_app/v1
+    description: Servidor local de desarrollo
+
+tags:
+  - name: Auth
+    description: Registro y autenticación de usuarios
+  - name: Movies (Usuario)
+    description: Endpoints de películas para usuarios autenticados
+  - name: Admin
+    description: Endpoints de administración del catálogo de películas (solo admin)
+  - name: PopulateDB
+    description: Endpoint para poblar la base de datos con datos iniciales
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Token JWT obtenido en el endpoint de login
+
+  schemas:
+    Movie:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 6a1da1d0bce8807694e1420c
+        title:
+          type: string
+          example: Origen
+        synopsis:
+          type: string
+          example: Un ladrón que roba secretos corporativos a través del uso de la tecnología
+        year:
+          type: integer
+          example: 2010
+        director:
+          type: string
+          example: Christopher Nolan
+        genres:
+          type: array
+          items:
+            type: string
+          example: ["Acción", "Ciencia ficción"]
+        duration:
+          type: integer
+          description: Duración en minutos
+          example: 148
+        image:
+          type: string
+          description: URL de la imagen en Cloudinary
+          example: https://res.cloudinary.com/dxqu5nylx/image/upload/v1/movie-app/origen.jpg
+        externalId:
+          type: string
+          example: tt1375666
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 6a1da1d0bce8807694e1422c
+        name:
+          type: string
+          example: Carlos
+        email:
+          type: string
+          example: admin1@example.com
+        rol:
+          type: string
+          enum: [user, admin]
+          example: admin
+
+    Error:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          example: false
+        msg:
+          type: string
+          example: Descripción del error
+
+    ValidationError:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          example: false
+        errors:
+          type: object
+          example:
+            title:
+              type: field
+              msg: El titulo es obligatorio
+              path: title
+              location: body
+
+  responses:
+    Unauthorized:
+      description: Token no enviado o inválido
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            ok: false
+            msg: Token no enviado
+    Forbidden:
+      description: El usuario no tiene el rol necesario
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            ok: false
+            msg: No tienes permisos para realizar esta acción
+    ServerError:
+      description: Error interno del servidor
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            ok: false
+            msg: Error interno del servidor
+
+# =============================================================
+# AUTH ENDPOINTS
+# =============================================================
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Autenticación de usuario
+      description: Autentica un usuario con email y contraseña y devuelve un JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: admin1@example.com
+                password:
+                  type: string
+                  example: "12345678"
+      responses:
+        '200':
+          description: Login correcto
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9...
+        '400':
+          description: Campos de validación incorrectos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '401':
+          description: Credenciales incorrectas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /auth/signup:
+    post:
+      tags:
+        - Auth
+      summary: Registro de nuevo usuario
+      description: Registra un nuevo usuario en la aplicación
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - email
+                - password
+              properties:
+                name:
+                  type: string
+                  example: Carlos
+                email:
+                  type: string
+                  format: email
+                  example: usuario@example.com
+                password:
+                  type: string
+                  example: "12345678"
+      responses:
+        '201':
+          description: Usuario registrado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  msg:
+                    type: string
+                    example: Usuario registrado
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9...
+        '400':
+          description: Campos de validación incorrectos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+# =============================================================
+# MOVIES ENDPOINTS (USUARIO)
+# =============================================================
+  /movies/search:
+    get:
+      tags:
+        - Movies (Usuario)
+      summary: Buscar películas por título
+      description: Busca películas en el catálogo local por título. Requiere rol user.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: title
+          in: query
+          required: true
+          description: Título o parte del título a buscar
+          schema:
+            type: string
+            example: Origen
+      responses:
+        '200':
+          description: Resultados de la búsqueda
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  movies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Movie'
+        '400':
+          description: Título no especificado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /movies/favorites:
+    get:
+      tags:
+        - Movies (Usuario)
+      summary: Obtener películas favoritas
+      description: Devuelve el listado de películas favoritas del usuario autenticado
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Listado de favoritos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  favorites:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Movie'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+    post:
+      tags:
+        - Movies (Usuario)
+      summary: Añadir película a favoritos
+      description: Vincula una película al listado de favoritos del usuario autenticado
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - movieId
+              properties:
+                movieId:
+                  type: string
+                  example: 6a1da1d0bce8807694e1420c
+      responses:
+        '200':
+          description: Película añadida a favoritos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  msg:
+                    type: string
+                    example: Película añadida a favoritos
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /movies/favorites/{id}:
+    delete:
+      tags:
+        - Movies (Usuario)
+      summary: Eliminar película de favoritos
+      description: Elimina una película del listado de favoritos del usuario autenticado
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la película a eliminar de favoritos
+          schema:
+            type: string
+            example: 6a1da1d0bce8807694e1420c
+      responses:
+        '200':
+          description: Película eliminada de favoritos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  msg:
+                    type: string
+                    example: Película eliminada de favoritos
+        '400':
+          description: ID de película no válido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /movies/{id}:
+    get:
+      tags:
+        - Movies (Usuario)
+      summary: Obtener película por ID
+      description: Devuelve los datos de una película por su ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la película
+          schema:
+            type: string
+            example: 6a1da1d0bce8807694e1420c
+      responses:
+        '200':
+          description: Datos de la película
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  movie:
+                    $ref: '#/components/schemas/Movie'
+        '400':
+          description: ID de película no válido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+# =============================================================
+# ADMIN ENDPOINTS
+# =============================================================
+  /admin/movies:
+    get:
+      tags:
+        - Admin
+      summary: Obtener todas las películas
+      description: Devuelve el catálogo completo de películas. Requiere rol admin.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Listado de películas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  movies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Movie'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+    post:
+      tags:
+        - Admin
+      summary: Crear nueva película
+      description: >
+        Da de alta una nueva película en el catálogo. Requiere rol admin.
+        La imagen se sube a Cloudinary mediante Multer.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - title
+              properties:
+                title:
+                  type: string
+                  example: Origen
+                synopsis:
+                  type: string
+                  example: Un ladrón que roba secretos corporativos...
+                year:
+                  type: integer
+                  example: 2010
+                director:
+                  type: string
+                  example: Christopher Nolan
+                genres:
+                  type: string
+                  example: Acción
+                duration:
+                  type: integer
+                  example: 148
+                externalId:
+                  type: string
+                  example: tt1375666
+                image:
+                  type: string
+                  format: binary
+                  description: Imagen de la carátula (jpg, jpeg, png, gif — máx 5MB)
+      responses:
+        '201':
+          description: Película creada correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  msg:
+                    type: string
+                    example: Recurso creado
+        '400':
+          description: Campos de validación incorrectos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /admin/movies/{id}:
+    get:
+      tags:
+        - Admin
+      summary: Obtener película por ID
+      description: Devuelve los datos de una película por su ID. Requiere rol admin.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la película
+          schema:
+            type: string
+            example: 6a1da1d0bce8807694e1420c
+      responses:
+        '200':
+          description: Datos de la película
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  movie:
+                    $ref: '#/components/schemas/Movie'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+    patch:
+      tags:
+        - Admin
+      summary: Editar película existente
+      description: >
+        Modifica los datos o la imagen de una película existente. Requiere rol admin.
+        La imagen se sube a Cloudinary mediante Multer.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la película a editar
+          schema:
+            type: string
+            example: 6a1da1d0bce8807694e1420c
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - title
+              properties:
+                title:
+                  type: string
+                  example: Origen
+                synopsis:
+                  type: string
+                  example: Un ladrón que roba secretos corporativos...
+                year:
+                  type: integer
+                  example: 2010
+                director:
+                  type: string
+                  example: Christopher Nolan
+                genres:
+                  type: string
+                  example: Acción
+                duration:
+                  type: integer
+                  example: 148
+                externalId:
+                  type: string
+                  example: tt1375666
+                image:
+                  type: string
+                  format: binary
+                  description: Nueva imagen de la carátula (opcional)
+      responses:
+        '200':
+          description: Película actualizada correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  msg:
+                    type: string
+                    example: pelicula editada
+                  movie:
+                    $ref: '#/components/schemas/Movie'
+        '400':
+          description: Campos de validación incorrectos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+    delete:
+      tags:
+        - Admin
+      summary: Eliminar película
+      description: >
+        Elimina una película del catálogo. Requiere rol admin.
+        También elimina automáticamente la película de los favoritos de cualquier usuario.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la película a eliminar
+          schema:
+            type: string
+            example: 6a1da1d0bce8807694e1420c
+      responses:
+        '200':
+          description: Película eliminada correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  msg:
+                    type: string
+                    example: borrando pelicula por id
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+# =============================================================
+# POPULATEDB ENDPOINT
+# =============================================================
+  /populateDB:
+    get:
+      tags:
+        - PopulateDB
+      summary: Poblar la base de datos
+      description: >
+        Endpoint de utilidad para inicializar la base de datos con datos de prueba.
+        No requiere autenticación. Solo debe usarse en entornos de desarrollo.
+      responses:
+        '200':
+          description: Base de datos poblada correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  msg:
+                    type: string
+                    example: Base de datos poblada correctamente
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
