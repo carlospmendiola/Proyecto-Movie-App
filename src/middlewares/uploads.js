@@ -1,6 +1,6 @@
 import multer from 'multer'
 import cloudinary from 'cloudinary'
-import { CloudinaryStorage } from 'multer - storage - cloudinary'
+import { CloudinaryStorage } from 'multer-storage-cloudinary'
 
 cloudinary.v2.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -11,7 +11,7 @@ cloudinary.v2.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary.v2,
   params: {
-    folder: 'movie- app',
+    folder: 'movie-app',
     allowed_formats: ['jpg', 'jpeg', 'png', 'gif']
   }
 })
