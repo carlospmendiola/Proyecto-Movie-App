@@ -4,7 +4,7 @@ import { generarToken } from "../utils/gestionarToken.js";
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email }).select("-_id name email rol +password");
+    const user = await User.findOne({ email }).select("name email rol password");
 
     if (!user)
       return res.status(404).json({
