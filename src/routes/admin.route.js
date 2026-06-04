@@ -22,15 +22,16 @@ adminRoutes.get("/movies",
   [
     validarToken,
     validarRol(["admin"])
-  ]
-  , obtenerTodasPeliculas);
+  ],
+  obtenerTodasPeliculas);
 
 //pelis por ID
 adminRoutes.get("/movies/:id",
   [
     validarToken,
     validarRol(["admin"]),
-    param('id', 'El id no tiene el formato correcto').custom(value => mongoose.isValidObjectId(value))
+    param('id', 'El id no tiene el formato correcto').custom(value => mongoose.isValidObjectId(value)),
+    validateInputs
   ],
   obtenerPeliculasID);
 
@@ -39,8 +40,8 @@ adminRoutes.post('/movies',
   [
     validarToken,
     validarRol(['admin']),
-    uploadImage,
     requireImage,
+    uploadImage,
     body('title', 'El titulo es obligatorio').notEmpty(),
     body('synopsis', 'La sinopsis es obligatoria').notEmpty(),
     body('director', 'El director es obligatorio').notEmpty(),
@@ -76,6 +77,7 @@ adminRoutes.delete("/movies/:id",
   [
     validarToken,
     validarRol(["admin"]),
-    param('id', 'El id no tiene el formato correcto').custom(value => mongoose.isValidObjectId(value))
+    param('id', 'El id no tiene el formato correcto').custom(value => mongoose.isValidObjectId(value)),
+    validateInputs
   ],
   borrarPeliculasID);

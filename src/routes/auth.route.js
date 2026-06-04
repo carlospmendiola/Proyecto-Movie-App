@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { body } from "express-validator";
-
 import { login, signup } from "../controllers/auth.controller.js";
 import { validateInputs } from "../middlewares/validateInputs.js";
 
@@ -42,8 +41,6 @@ authRoutes.post("/signup",
       .isLength({ min: 8, max: 72 }).withMessage('Debe tener entre 8 y 72 caracteres')
       .isStrongPassword('La contraseña debe tener una letra, numero y carácter especial')
       .trim(),
-
-
     validateInputs
   ],
   signup

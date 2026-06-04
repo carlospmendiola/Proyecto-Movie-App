@@ -1,4 +1,4 @@
-import upload from '../middlewares/uploads.js'
+import upload from '../utils/uploads.js'
 
 export const uploadImage = (req, res, next) => {
     upload.single('image')(req, res, (err) => {

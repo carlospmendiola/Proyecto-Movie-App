@@ -33,8 +33,7 @@ moviesRoutes.get("/search",
 moviesRoutes.get("/favorites",
   [
     validarToken,
-    validarRol(["user"]),
-    validateInputs
+    validarRol(["user"])
   ],
   obtenerFavoritos
 );
