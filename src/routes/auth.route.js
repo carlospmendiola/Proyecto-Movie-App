@@ -1,24 +1,47 @@
 import { Router } from "express";
-import { check } from "express-validator";
-
+import { body } from "express-validator";
 import { login, signup } from "../controllers/auth.controller.js";
 import { validateInputs } from "../middlewares/validateInputs.js";
 
 export const authRoutes = Router();
 
+//LOGIN
 authRoutes.post("/login",
   [
-    check('email', 'El email es obligatorio').not().isEmpty(),
-    check('password', 'La contraseña es obligatoria').not().isEmpty(),
+    body('email')
+      .notEmpty().withMessage('El email es obligatorio')
+      .isEmail().withMessage('Formato de email inválido')
+      .normalizeEmail()
+      .isLength({ max: 100 }),
+
+    body('password')
+      .notEmpty().withMessage('La contraseña es obligatoria'),
+
     validateInputs
   ],
-  login);
+  login
+);
 
+//SIGNUP
 authRoutes.post("/signup",
   [
-    check('name', 'El usuario debe tener un alias asociado').not().isEmpty(),
-    check('email', 'El usuario debe tener un email asociado').not().isEmpty(),
-    check('password', 'El usuario debe introducir una contraseña').not().isEmpty(),
+    body('name')
+      .notEmpty().withMessage('El usuario debe tener un alias asociado')
+      .trim()
+      .isLength({ min: 3, max: 30 }),
+
+    body('email')
+      .notEmpty().withMessage('El email es obligatorio')
+      .isEmail().withMessage('Formato de email inválido')
+      .normalizeEmail()
+      .isLength({ max: 100 }),
+
+    body('password')
+      .notEmpty().withMessage('La contraseña es obligatoria')
+      .isLength({ min: 8, max: 72 }).withMessage('Debe tener entre 8 y 72 caracteres')
+      .isStrongPassword('La contraseña debe tener una letra, numero y carácter especial')
+      .trim(),
     validateInputs
   ],
-  signup);
+  signup
+);
