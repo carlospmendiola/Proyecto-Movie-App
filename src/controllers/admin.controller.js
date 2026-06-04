@@ -1,4 +1,5 @@
 import { Movie } from "../models/movie.model.js";
+import { User } from "../models/user.model.js";
 import { findMoviebyIdController } from "../utils/findMovieByIdController.js";
 
 export const obtenerTodasPeliculas = async (req, res) => {
@@ -110,6 +111,12 @@ export const borrarPeliculasID = async (req, res) => {
         token: req.token
       });
     }
+
+    // Borrar la película de las listas de favoritos, no es necesario esperar a su finalización
+    User.updateMany(
+      { favorites: id },
+      { $pull: { favorites: id } }
+    );
 
     res.status(200).json({
       ok: true,
