@@ -133,5 +133,12 @@ Las variables se dividen en 2 partes:
 - Las propias del proyecto:
 El puerto, la ruta base para acceso a la API y la clave para el cifrado de JWT.
 
+
+
+## Credenciales de prueba
+name:user1, email:user1@example.com, password:12345678
+name:admin1, email:admin1@example.com, password:12345678
+name:user2, email:user2@example.com, password:87654321
+
 - Las que provienen de servicios y servidores externos
 Estas variables se obtienen de la instalacion de Mongo, API KEY solicitada a OMDB y cuenta registrada en Cloudinary
